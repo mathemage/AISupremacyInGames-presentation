@@ -1,15 +1,14 @@
-#texCompiler = xelatex
 texCompiler = pdflatex
-all: CapsuleGAN.pdf
+all: AISupremacy.pdf
 
 # LaTeX must be run multiple times to get references right
-CapsuleGAN.pdf: CapsuleGAN.tex $(wildcard *.tex) ../bibliography.bib
+AISupremacy.pdf: AISupremacy.tex $(wildcard *.tex) ../bibliography.bib
 	${texCompiler} $<
-	bibtex CapsuleGAN
+	bibtex AISupremacy
 	${texCompiler} $<
 	${texCompiler} $<
 
 clean:
 	rm -f *.log *.dvi *.aux *.toc *.lof *.lot *.out *.bbl *.blg *._aux *._log *.nav *.synctex.gz *.project.vim *-blx.bib *.run.xml *.snm
 	rm -rf .tmp/*
-	rm -f CapsuleGAN.pdf
+	rm -f AISupremacy.pdf

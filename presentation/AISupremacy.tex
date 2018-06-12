@@ -310,29 +310,10 @@
       \end{center}
     \end{frame}
 
-    \begin{frame}{Value Network (1/2)}
+    \begin{frame}{Value Network}
       \begin{itemize}[<+- | alert@+>]
         \item similar architecture to the policy network, but outputs a~single prediction instead of~a~probability distribution
-        \item goal: to estimate a~value function
-          \[
-            v^p(s) = \E [z_t | s_t = s, a_{t \dots T} \sim p]
-          \]
-          that predicts the outcome from position~$s$ (of~games played by~using policy $p_\rho$)
-        \item Specifically, $v_\theta(s) \approx v^{p_\rho}(s) \approx v^*(s)$.
-        \item task of~\textbf{regression}
-        \item stochastic gradient descent:
-          \[
-            \Delta \theta \propto \frac{\partial v_\theta (s)}{\partial \theta} (z - v_\theta(s))
-          \]
-          {\tiny (to~minimize the mean squared error (MSE) between the predicted $v_\theta(s)$ and the true $z$)}
-      \end{itemize}
-    \end{frame}
-
-    \begin{frame}{Value Network (2/2)}
-      Beware of~overfitting!
-      \pause
-      \begin{itemize}[<+- | alert@+>]
-        \item Successive positions are strongly correlated.
+        \item Beware: successive positions are strongly correlated!
         \item Value network memorized the game outcomes, rather than generalizing to new positions.
         \item Solution: generate 30 million (new) positions, each sampled from a~\textbf{seperate} game
         \item almost the accuracy of~Monte Carlo rollouts (using $p_\rho$), but $15000$ times less computation!

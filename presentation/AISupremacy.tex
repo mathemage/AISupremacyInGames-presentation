@@ -550,6 +550,37 @@
         \item 100 rollouts, played out using the corresponding policy
       \end{itemize}
     \end{frame}
+
+    \begin{frame}{Scalability}
+      \begin{itemize}
+        \item asynchronous multi-threaded search
+        \item simulations on~CPUs
+        \item computation of~neural networks on GPUs
+      \end{itemize}
+      \pause
+
+      AlphaGo:
+      \begin{itemize}
+        \item 40 search threads
+        \item 40 CPUs
+        \item 8 GPUs
+      \end{itemize}
+      \pause
+
+      Distributed version of AlphaGo (on~multiple machines):
+      \begin{itemize}
+        \item 40 search threads
+        \item 1202 CPUs
+        \item 176 GPUs
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{ELO Ratings for~Various Combinations of~Threads}
+      \begin{center}
+        \vskip -1ex
+        \includegraphics[height=.9\textheight]{../img/ELO_ratings_various_combinations_of_threads.png}
+      \end{center}
+    \end{frame}
   }
 
   % TODO display (I), (II) instead of i, ii

@@ -315,7 +315,7 @@
         \item similar architecture to the policy network, but outputs a~single prediction instead of~a~probability distribution
         \item Beware: successive positions are strongly correlated!
         \item Value network memorized the game outcomes, rather than generalizing to new positions.
-        \item Solution: generate 30 million (new) positions, each sampled from a~\textbf{seperate} game
+        \item Solution: generate 30 million (new) positions, each sampled from a~\textbf{separate} game
         \item almost the accuracy of~Monte Carlo rollouts (using $p_\rho$), but $15000$ times less computation!
       \end{itemize}
       \pause
@@ -340,6 +340,21 @@
       \begin{center}
         \includegraphics[height=.85\textheight]{../img/ELO_ratings_various_combinations_of_ANNs.png}
       \end{center}
+    \end{frame}
+
+    \begin{frame}{Monte Carlo Tree Search (MCTS) Algorithm}
+      The tree is traversed by simulation from the root state (i.e. descending the tree).
+      \pause
+
+      The next action is selected with a~\textbf{lookahead} search:
+      \pause
+      \begin{enumerate}[<+- | alert@+>]
+        \item selection phase
+        \item expansion phase
+        \item evaluation phase
+        \item backup phase (at~end of~simulation)
+          \pause
+      \end{enumerate}
     \end{frame}
   }
 

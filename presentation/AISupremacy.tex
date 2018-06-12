@@ -356,6 +356,39 @@
           \pause
       \end{enumerate}
     \end{frame}
+
+    \begin{frame}{MCTS Algorithm: Selection}
+      \begin{center}
+        \includegraphics[height=.6\textheight]{../img/MCTS_selection.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{MCTS Algorithm: Expansion}
+      \begin{center}
+        \includegraphics[height=.6\textheight]{../img/MCTS_expansion.png}
+      \end{center}
+      \pause
+
+      \begin{itemize}[<+- | alert@+>]
+        \item A~leaf position may be expanded by the SL policy network~$p_\sigma$.
+        \item Once it's expanded, it remains so until the end.
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{MCTS: Evaluation}
+      \begin{center}
+        \includegraphics[height=.6\textheight]{../img/MCTS_evaluation.png}
+      \end{center}
+      \pause
+
+      Both of the following 2 evalutions:
+      \pause
+      \begin{itemize}[<+- | alert@+>]
+        \item evaluation from the value network $v_\theta (s)$
+        \item evaluation by the outcome of~the fast rollout $p_\pi$
+      \end{itemize}
+      \pause
+    \end{frame}
   }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

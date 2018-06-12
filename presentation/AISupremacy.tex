@@ -292,7 +292,7 @@
       \end{center}
     \end{frame}
 
-    \begin{frame}{RL Policy Networks (1/2)}
+    \begin{frame}{RL Policy Networks}
       \begin{itemize}[<+- | alert@+>]
         \item identical in~structure to the SL policy network
         \item games of \textbf{self-play}
@@ -302,20 +302,6 @@
           \end{itemize}
       \end{itemize}
       \pause
-    \end{frame}
-
-    \begin{frame}{RL Policy Networks (2/2)}
-      Results (by sampling each move $a_t \sim p_\rho(\cdot | s_t)$):
-      \pause
-      \begin{itemize}[<+- | alert@+>]
-        \item $80\%$ of~win rate against the SL policy network
-        \item $85\%$ of~win rate against the strongest open-source Go program, \textbf{Pachi} (\cite{Baudivs2011pachi})
-          \begin{itemize}[<+- | alert@+>]
-            \item The previous state-of-the-art, based only on~SL of~CNN: \\
-              \pause
-              $11\%$ of~``win'' rate against Pachi
-          \end{itemize}
-      \end{itemize}
     \end{frame}
 
     \begin{frame}{Training the (Deep Convolutional) Neural Networks}
@@ -461,6 +447,20 @@
       \begin{center}
         \includegraphics[width=\textwidth]{../img/SL_policy_accuracy_vs_win_rate.png}
       \end{center}
+    \end{frame}
+
+    \begin{frame}{RL Policy Networks (details)}
+      Results (by sampling each move $a_t \sim p_\rho(\cdot | s_t)$):
+      \pause
+      \begin{itemize}[<+- | alert@+>]
+        \item $80\%$ of~win rate against the SL policy network
+        \item $85\%$ of~win rate against the strongest open-source Go program, \textbf{Pachi} (\cite{Baudivs2011pachi})
+          \begin{itemize}[<+- | alert@+>]
+            \item The previous state-of-the-art, based only on~SL of~CNN: \\
+              \pause
+              $11\%$ of~``win'' rate against Pachi
+          \end{itemize}
+      \end{itemize}
     \end{frame}
   }
 

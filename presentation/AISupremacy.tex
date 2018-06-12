@@ -295,19 +295,11 @@
     \begin{frame}{RL Policy Networks (1/2)}
       \begin{itemize}[<+- | alert@+>]
         \item identical in~structure to the SL policy network
-        \item goal: to~win in~the games of~self-play
-        \item task of \textbf{classification}
-        \item weights $\rho$ initialized to the same values, $\rho := \sigma$
-        \item games of self-play
+        \item games of \textbf{self-play}
           \begin{itemize}[<+- | alert@+>]
             \item between the current RL policy network and a~randomly selected previous iteration
-            \item to prevent overfitting to~the current policy
+            \item goal: to~win in~the games of~self-play
           \end{itemize}
-        \item stochastic gradient ascent:
-          \[
-            \Delta \rho \propto \frac{\partial \log p_\rho (a_t|s_t)}{\partial \rho} z_t
-          \]
-          {\tiny at~time step~$t$, where reward function~$z_t$ is $+1$ for winning and $-1$ for losing.}
       \end{itemize}
       \pause
     \end{frame}

@@ -377,7 +377,7 @@
 
     \begin{frame}{MCTS: Evaluation}
       \begin{center}
-        \includegraphics[height=.6\textheight]{../img/MCTS_evaluation.png}
+        \includegraphics[height=.55\textheight]{../img/MCTS_evaluation.png}
       \end{center}
       \pause
 
@@ -388,6 +388,36 @@
         \item evaluation by the outcome of~the fast rollout $p_\pi$
       \end{itemize}
       \pause
+    \end{frame}
+
+    \begin{frame}{MCTS: Backup}
+      \begin{center}
+        \includegraphics[height=.6\textheight]{../img/MCTS_backup.png}
+      \end{center}
+
+      At the end of a~simulation, each traversed edge \textbf{updates} its values.
+    \end{frame}
+
+    \begin{frame}[standout]
+      Once the search is complete, the algorithm chooses \alert{the most visited move} from the root position.
+    \end{frame}
+
+    \begin{frame}{Tree Evaluation from Value Network}
+      \begin{center}
+        \includegraphics[height=.82\textheight]{../img/tree_eval_from_value_network.png}
+
+        \tiny
+        action values~$Q(s, a)$ for~each tree-edge~$(s, a)$ from root position~$s$ (averaged over value network evaluations only)
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{Tree Evaluation from Rollouts}
+      \begin{center}
+        \includegraphics[height=.82\textheight]{../img/tree_eval_from_rollouts.png}
+
+        \tiny
+        action values $Q(s, a)$, averaged over rollout evaluations only
+      \end{center}
     \end{frame}
   }
 

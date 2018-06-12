@@ -244,6 +244,192 @@
     \end{frame}
   }
 
+  \begin{frame}[standout]
+    \begin{center}
+      AlphaGo
+    \end{center}
+  \end{frame}
+
+  {
+    \setbeamertemplate{frame footer}{\cite{Silver2016mastering}}
+    \begin{frame}{Policy and Value Networks}
+      \begin{center}
+        \includegraphics[height=.85\textheight]{../img/policy_and_value_network.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{Training the (Deep Convolutional) Neural Networks}
+      \begin{center}
+        \includegraphics[width=\textwidth]{../img/neural_nets_pipeline.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{SL Policy Networks (1/3)}
+      \begin{itemize}[<+- | alert@+>]
+        \item 13-layer deep convolutional neural network
+        \item goal: to~predict expert human moves
+        \item task of \textbf{classification}
+        \item trained from 30 millions positions from the KGS Go Server
+        \item stochastic gradient ascent:
+          \[
+            \Delta \sigma \propto \frac{\partial \log p_\sigma (a|s)}{\partial \sigma}
+          \]
+          {\tiny (to~maximize the likelihood of~the human move~$a$ selected in~state~$s$)}
+      \end{itemize}
+      \pause
+
+      Results:
+      \pause
+      \begin{itemize}[<+- | alert@+>]
+        \item $44.4\%$ accuracy (the state-of-the-art from other groups)
+        \item $55.7\%$ accuracy (raw board position + move history as~input)
+        \item $57.0\%$ accuracy (all input features)
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{SL Policy Networks (2/3)}
+      Small improvements in~accuracy led to~large improvements in~playing strength (see the next slide)
+      \begin{center}
+        \includegraphics[width=\textwidth]{../img/SL_policy_accuracy_vs_win_rate.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{SL Policy Networks (3/3)}
+      \begin{center}
+        \includegraphics[height=.8\textheight]{../img/eval_SL_policy_network.png}
+
+        \tiny
+        move probabilities taken directly from the SL policy network $p_\sigma$ (reported as a~percentage if above $0.1\%$).
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{Training the (Deep Convolutional) Neural Networks}
+      \begin{center}
+        \includegraphics[width=\textwidth]{../img/neural_nets_pipeline.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{Rollout Policy}
+      \begin{itemize}[<+- | alert@+>]
+        \item Rollout policy~$p_\pi(a|s)$ is \textbf{faster} but \textbf{less accurate} than SL policy network.
+        \item accuracy of~$24.2\%$
+        \item It takes $2 \mu$s to~select an~action, compared to $3$~ms in~case of~SL policy network.
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Training the (Deep Convolutional) Neural Networks}
+      \begin{center}
+        \includegraphics[width=\textwidth]{../img/neural_nets_pipeline.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{RL Policy Networks (1/2)}
+      \begin{itemize}[<+- | alert@+>]
+        \item identical in~structure to the SL policy network
+        \item goal: to~win in~the games of~self-play
+        \item task of \textbf{classification}
+        \item weights $\rho$ initialized to the same values, $\rho := \sigma$
+        \item games of self-play
+          \begin{itemize}[<+- | alert@+>]
+            \item between the current RL policy network and a~randomly selected previous iteration
+            \item to prevent overfitting to~the current policy
+          \end{itemize}
+        \item stochastic gradient ascent:
+          \[
+            \Delta \rho \propto \frac{\partial \log p_\rho (a_t|s_t)}{\partial \rho} z_t
+          \]
+          {\tiny at~time step~$t$, where reward function~$z_t$ is $+1$ for winning and $-1$ for losing.}
+      \end{itemize}
+      \pause
+    \end{frame}
+
+    \begin{frame}{RL Policy Networks (2/2)}
+      Results (by sampling each move $a_t \sim p_\rho(\cdot | s_t)$):
+      \pause
+      \begin{itemize}[<+- | alert@+>]
+        \item $80\%$ of~win rate against the SL policy network
+        \item $85\%$ of~win rate against the strongest open-source Go program, \textbf{Pachi} (\cite{Baudivs2011pachi})
+          \begin{itemize}[<+- | alert@+>]
+            \item The previous state-of-the-art, based only on~SL of~CNN: \\
+              \pause
+              $11\%$ of~``win'' rate against Pachi
+          \end{itemize}
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Training the (Deep Convolutional) Neural Networks}
+      \begin{center}
+        \includegraphics[width=\textwidth]{../img/neural_nets_pipeline.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{Value Network (1/2)}
+      \begin{itemize}[<+- | alert@+>]
+        \item similar architecture to the policy network, but outputs a~single prediction instead of~a~probability distribution
+        \item goal: to estimate a~value function
+          \[
+            v^p(s) = \E [z_t | s_t = s, a_{t \dots T} \sim p]
+          \]
+          that predicts the outcome from position~$s$ (of~games played by~using policy $p_\rho$)
+        \item Specifically, $v_\theta(s) \approx v^{p_\rho}(s) \approx v^*(s)$.
+        \item task of~\textbf{regression}
+        \item stochastic gradient descent:
+          \[
+            \Delta \theta \propto \frac{\partial v_\theta (s)}{\partial \theta} (z - v_\theta(s))
+          \]
+          {\tiny (to~minimize the mean squared error (MSE) between the predicted $v_\theta(s)$ and the true $z$)}
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Value Network (2/2)}
+      Beware of~overfitting!
+      \pause
+      \begin{itemize}[<+- | alert@+>]
+        \item Successive positions are strongly correlated.
+        \item Value network memorized the game outcomes, rather than generalizing to new positions.
+        \item Solution: generate 30 million (new) positions, each sampled from a~\textbf{seperate} game
+        \item almost the accuracy of~Monte Carlo rollouts (using $p_\rho$), but $15000$ times less computation!
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Selection of~Moves by the Value Network}
+      \begin{center}
+        \includegraphics[height=.8\textheight]{../img/move_selection_by_value_network.png}
+
+        \tiny
+        evaluation of~all successors $s'$ of~the root position~$s$, using~$v_\theta(s′)$
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{Evaluation accuracy in~various stages of a~game}
+      \includegraphics[width=\textwidth]{../img/policies_move_numbers_vs_MSE.png}
+
+      \vskip -2.4ex
+      {\tiny
+      \textbf{Move number} is the number of~moves that had been played in the given position.
+      }
+
+      \pause
+      Each position evaluated by:
+      \begin{itemize}[<+- | alert@+>]
+        \item forward pass of the value network~$v_\theta$
+        \item 100 rollouts, played out using the corresponding policy
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{Training the (Deep Convolutional) Neural Networks}
+      \begin{center}
+        \includegraphics[width=\textwidth]{../img/neural_nets_pipeline.png}
+      \end{center}
+    \end{frame}
+
+    \begin{frame}{ELO Ratings for~Various Combinations of~Networks}
+      \begin{center}
+        \includegraphics[height=.85\textheight]{../img/ELO_ratings_various_combinations_of_ANNs.png}
+      \end{center}
+    \end{frame}
+  }
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
   \section{Poker: Cepheus, DeepStack}

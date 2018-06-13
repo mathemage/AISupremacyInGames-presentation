@@ -1,0 +1,841 @@
+\renewcommand{\topfraction}{.85}
+\renewcommand{\bottomfraction}{.7}
+\renewcommand{\textfraction}{.15}
+\renewcommand{\floatpagefraction}{.66}
+\renewcommand{\dbltopfraction}{.66}
+\renewcommand{\dblfloatpagefraction}{.66}
+\setcounter{topnumber}{9}
+\setcounter{bottomnumber}{9}
+\setcounter{totalnumber}{20}
+\setcounter{dbltopnumber}{9}
+
+\section*{Game of Heads-Up No-Limit Texas Hold'em}
+Heads-up no-limit Texas hold'em (\HUNL{}) is a two-player poker game. It is a repeated game, in which the
+two players play a match of individual games, usually called hands,
+while alternating
+who is the dealer. In each of the individual games, one player will win some number of chips
+from the other player, and the goal is to win as many chips as possible over the course of the
+match.  
+
+Each individual game begins with both players placing a number of chips in the pot: the
+player in the dealer position puts in the small blind, and the other player puts in the big blind,
+which is twice the small blind amount.   
+During a game, a player can only wager and win up to a fixed amount known as their stack.  In the
+particular format of \HUNL{} used in the Annual Computer Poker Competition~\cite{ZinkevichLittman06} and this article, the big blind is 100 chips and the stack is 20,000 chips or 200 big blinds.
+Resetting the stacks after each game is called ``Doyle's Game'', named for the
+professional poker player Doyle Brunson who
+publicized this variant~\cite{Gilpin08:Tartanian}.  It is used in the Annual Computer Poker Competitions because it allows for each game to be an independent sample of the same game.
+
+A game of \HUNL{} progresses through four rounds: the
+pre-flop, flop, turn, and river. Each round consists of cards being dealt followed by player
+actions in the form of wagers as to who will hold the strongest hand at the end of the game. In
+the pre-flop, each player is given two private cards, unobserved by their opponent. In the later
+rounds, cards are dealt face-up in the center of the table, called public cards. A total of five
+public cards are revealed over the four rounds: three on the flop, one on the turn, and one
+on the river.
+
+After the cards for the round are dealt, players alternate taking actions of
+three types: fold, call, or raise. A player folds by declining to match the last opponent wager,
+thus forfeiting to the opponent all chips in the pot and ending the game with no player revealing
+their private cards. A player calls by adding chips into the pot to match the last opponent wager,
+which causes the next round to begin. A player raises by adding chips into the pot to match the
+last wager followed by adding additional chips to make a wager of their own. At the beginning
+of a round when there is no opponent wager yet to match, the raise action is called bet, and
+the call action is called check, which only ends the round if both players check. 
+An all-in wager is one
+involving all of the chips remaining the player's stack.  If the wager is called, there is no further 
+wagering in later rounds.
+The size of
+any other wager can be any whole number of chips remaining in the player's stack, as long as it
+is not smaller than the last wager in the current round or the big blind.  
+
+The dealer acts first in the pre-flop round and must decide whether to fold, call, or raise the opponent's big blind bet.  In all subsequent rounds, the non-dealer acts first.
+If the river round ends with no player previously folding to end the game, the outcome is
+determined by a showdown. Each player reveals their two private cards and the player that can
+form the strongest five-card poker hand (see ``List of poker hand categories'' on Wikipedia; accessed January
+1, 2017) wins all the chips in the pot. To form their hand each player may use any cards from
+their two private cards and the five public cards. At the end of the game, whether ended by
+fold or showdown, the players will swap who is the dealer and begin the next game.
+
+Since the game can be played for different stakes, such as a big blind being worth \$0.01
+or \$1 or \$1000, players commonly measure their performance over a match as their average
+number of big blinds won per game. Researchers have standardized on the unit milli-big-blinds
+per game, or mbb/g, where one milli-big-blind is one thousandth of one big blind. A player that always
+folds will lose 750 mbb/g (by losing 1000 mbb as the big blind and 500 as the small blind).
+A human rule-of-thumb is that a professional should aim to win at least 50 mbb/g from their
+opponents. Milli-big-blinds per game is also used as a unit of exploitability, when it is computed
+as the expected loss per game against a worst-case opponent.  In the poker community, it is common to use big blinds per one hundred games (bb/100) to measure win rates, where 10 mbb/g equals 1 bb/100.
+
+\section*{Poker Glossary}
+\begin{description}
+\item[all-in] A wager of the remainder of a player's stack.  The opponent's only response can be call or fold.
+\item[bet] The first wager in a round; putting more chips into the pot. 
+\item[big blind] Initial wager made by the non-dealer before any cards are dealt.  The big blind is twice the size of the small blind.  
+\item[call] Putting enough chips into the pot to match the current wager; ends the round.
+\item[check] Declining to wager any chips when not facing a bet.
+\item[chip] Marker representing value used for wagers; all wagers must be a whole numbers of chips.
+\item[dealer] The player who puts the small blind into the pot.  Acts first on round 1, and second on the later rounds.  Traditionally, they would 
+distribute public and private cards from the deck.  
+\item[flop] The second round; can refer to either the 3 revealed public cards, or the betting round after these cards are revealed.
+\item[fold] Give up on the current game, forfeiting all wagers placed in the pot.  Ends a player's participation in the game.
+\item[hand] Many different meanings: the combination of the best 5 cards from the public cards and private cards, just the private cards themselves, or a single game of poker (for clarity, we avoid this final meaning). 
+\item[milli-big-blinds per game (mbb/g)] Average winning rate over a number of games, measured in thousandths of big blinds.
+\item[pot] The collected chips from all wagers.
+\item[pre-flop] The first round; can refer to either the hole cards, or the betting round after these cards are distributed.
+\item[private cards] Cards dealt face down, visible only to one player.  Used in combination with public cards to create a hand. Also called hole cards.
+\item[public cards] Cards dealt face up, visible to all players.  Used in combination with private cards to create a hand. Also called community cards.
+\item[raise] Increasing the size of a wager in a round, putting more chips into the pot than is required to call the current bet.
+\item[river] The fourth and final round; can refer to either the 1 revealed public card, or the betting round after this card is revealed.
+\item[showdown] After the river, players who have not folded show their private cards to determine the player with the best hand.  The player with the best hand takes all of the chips in the pot.
+\item[small blind] Initial wager made by the dealer before any cards are dealt.  The small blind is half the size of the big blind.
+\item[stack] The maximum amount of chips a player can wager or win in a single game.
+\item[turn] The third round; can refer to either the 1 revealed public card, or the betting round after this card is revealed.
+\end{description}
+
+\section*{Performance Against Professional Players}
+
+To assess DeepStack relative to expert humans, players were
+recruited with assistance from the International Federation of Poker~\cite{IFP} to identify and recruit professional poker players through their 
+member nation organizations.  We only selected participants from those who self-identified as a ``professional poker player'' during registration.
+Players were given four weeks to complete a 3,000 game match.  To incentivize
+players, monetary prizes of \$5,000, \$2,500, and \$1,250 (CAD) were awarded to
+the top three players (measured by AIVAT) that completed their match.  
+The participants were informed of all of these details when they registered to participate.
+Matches
+were played between November 7th and December 12th, 2016, and run using an
+online user interface~\cite{DustinGUISource} where players had the option to play up to
+four games simultaneously as is common in online poker sites.  A total of 33 players from 17 countries played
+against DeepStack.  DeepStack's performance against each individual is
+presented in Table~\ref{tab-human}, with complete game histories available as part of the supplementary online materials. 
+
+\begin{table}[!hp]
+\centering
+\small
+\caption{Results against professional poker players estimated with AIVAT (Luck Adjusted Win Rate) and chips won (Unadjusted Win Rate), both measured in mbb/g.  Recall 10mbb/g equals 1bb/100.  Each estimate
+is followed by a 95\% confidence interval.  $\ddagger$ marks a participant who completed the 3000 games after their allotted four week period.}
+
+\label{tab-human}
+
+\fboxrule0.2pt
+\fboxsep0pt
+
+\begin{tabular}{m{0.21\textwidth}m{0.03\textwidth}|rrr@{~$\pm$~}R{0.0485\textwidth}r@{~$\pm$~}R{0.0605\textwidth}}
+\toprule
+Player & & Rank & Hands & \multicolumn{2}{r}{\begin{tabular}{c}Luck Adjusted\\Win Rate\end{tabular}} & \multicolumn{2}{r}{\begin{tabular}{c}Unadjusted\\Win Rate\end{tabular}} \\
+\midrule
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% original \sqrt(n) stdev, 1.96 confidence interval
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%Martin Sturc & \includegraphics[width=\linewidth]{figs/flags/wiki/Austria} & 1 & 3000  & $69.6964914566639$ & $118.556050957694$ & $-514.67$ & $574.73731271412$ \\
+%Stanislav Voloshin & \includegraphics[width=\linewidth]{figs/flags/wiki/Ukraine} & 2 & 3000  & $126.309752359999$ & $103.397992768264$ & $-64.83$ & $647.879905285366$ \\
+%Prakshat Shrimankar & \includegraphics[width=\linewidth]{figs/flags/wiki/India} & 3 & 3000  & $139.459942329999$ & $96.5873830086089$ & $173.593333333333$ & $666.440158121575$ \\
+%Ivan Shabalin & \includegraphics[width=\linewidth]{figs/flags/wiki/Russia} & 4 & 3000  & $169.694502333334$ & $98.8329268592436$ & $152.696666666667$ & $632.846376028447$ \\
+%Lucas Schaumann & \includegraphics[width=\linewidth]{figs/flags/wiki/Germany} & 5 & 3000  & $207.109262243334$ & $86.5076923741733$ & $160.333333333333$ & $575.618648212268$ \\
+%Phil Laak & \includegraphics[width=\linewidth]{figs/flags/wiki/United_States} & 6 & 3000  & $211.750217359999$ & $142.966265182297$ & $773.713333333333$ & $676.934703326688$ \\
+%Kaishi Sun & \includegraphics[width=\linewidth]{figs/flags/wiki/China} & 7 & 3000  & $363.173706640001$ & $116.268693327974$ & $4.81666666666667$ & $728.0863382521$ \\
+%Dmitry Lesnoy & \includegraphics[width=\linewidth]{figs/flags/wiki/Cyprus} & 8 & 3000  & $410.79388275$ & $137.772613657952$ & $-87.11$ & $752.272427496047$ \\
+%Antonio Parlavecchio & \includegraphics[width=\linewidth]{figs/flags/wiki/Italy} & 9 & 3000  & $617.760595779999$ & $211.463898517115$ & $1095.73666666667$ & $961.54846855557$ \\
+%Muskan Sethi & \includegraphics[width=\linewidth]{figs/flags/wiki/India} & 10 & 3000  & $1008.88779660333$ & $184.320642842592$ & $2143.68333333333$ & $1018.0443072606$ \\
+%Pol Dmit\textsuperscript{\ddagger} & \includegraphics[width=\linewidth]{figs/flags/wiki/Russia} & -- & 3000  & $1007.85951763$ & $155.66176630142$ & $882.5$ & $792.202654749542$ \\
+%Tsuneaki Takeda & \includegraphics[width=\linewidth]{figs/flags/wiki/Japan} & -- & 1901  & $627.987817485534$ & $230.675972115196$ & $-332.482903734876$ & $1227.35490084602$ \\
+%Youwei Qin & \includegraphics[width=\linewidth]{figs/flags/wiki/Australia} & -- & 1759  & $1310.75771449119$ & $330.755894151409$ & $1957.65207504264$ & $1797.16935088017$ \\
+%Fintan Gavin & \includegraphics[width=\linewidth]{figs/flags/wiki/Ireland} & -- & 1555  & $634.519751344052$ & $277.518559492406$ & $-25.871382636656$ & $1645.55828009958$ \\
+%Giedrius Talacka & \includegraphics[width=\linewidth]{figs/flags/wiki/Lithuania} & -- & 1514  & $1062.57405149934$ & $337.410617033733$ & $459.379128137384$ & $1705.01421467224$ \\
+%Juergen Bachmann & \includegraphics[width=\linewidth]{figs/flags/wiki/Germany} & -- & 1088  & $527.247847591911$ & $198.163687450156$ & $1769.02573529412$ & $1659.27723990079$ \\
+%Sergey Indenok & \includegraphics[width=\linewidth]{figs/flags/wiki/Russia} & -- & 852  & $881.070857593896$ & $370.410717072337$ & $252.934272300469$ & $2501.57366061434$ \\
+%Sebastian Schwab & \includegraphics[width=\linewidth]{figs/flags/wiki/Germany} & -- & 516  & $1086.05717612403$ & $595.913471673604$ & $180$ & $2155.11799505638$ \\
+%Dara O'Kearney & \includegraphics[width=\linewidth]{figs/flags/wiki/Ireland} & -- & 456  & $77.5949346052632$ & $249.000930325726$ & $222.565789473684$ & $1681.9667207829$ \\
+%Roman Shaposhnikov & \includegraphics[width=\linewidth]{figs/flags/wiki/Russia} & -- & 330  & $131.020671727273$ & $302.976656345678$ & $-898.151515151515$ & $2141.56773784076$ \\
+%Shai Zurr & \includegraphics[width=\linewidth]{figs/flags/wiki/Israel} & -- & 330  & $498.839533424242$ & $357.78992853752$ & $1154.09090909091$ & $2194.15896899689$ \\
+%Luca Moschitta & \includegraphics[width=\linewidth]{figs/flags/wiki/Italy} & -- & 328  & $444.324623445122$ & $577.470274036567$ & $1438.26219512195$ & $2375.68677757708$ \\
+%Stas Tishekvich & \includegraphics[width=\linewidth]{figs/flags/wiki/Israel} & -- & 295  & $-45.3259391186445$ & $430.682195353754$ & $-346.440677966102$ & $2251.18032182098$ \\
+%Eyal Eshkar & \includegraphics[width=\linewidth]{figs/flags/wiki/Israel} & -- & 191  & $18.4264793193717$ & $602.245851696345$ & $715.44502617801$ & $4189.65970672464$ \\
+%Jefri Islam & \includegraphics[width=\linewidth]{figs/flags/wiki/Austria} & -- & 176  & $996.643538920454$ & $693.109380731036$ & $3821.875$ & $4787.01002662457$ \\
+%Fan Sun & \includegraphics[width=\linewidth]{figs/flags/wiki/China} & -- & 122  & $530.618144590164$ & $763.238610636314$ & $-1290.81967213115$ & $5379.37654857732$ \\
+%Igor Naumenko & \includegraphics[width=\linewidth]{figs/flags/wiki/Ukraine} & -- & 102  & $-136.857853039215$ & $627.0268360446$ & $850.980392156863$ & $1510.26919439544$ \\
+%Silvio Pizzarello & \includegraphics[width=\linewidth]{figs/flags/wiki/Italy} & -- & 90  & $1500.00386455556$ & $2059.92692468805$ & $5134.33333333333$ & $6636.85061448684$ \\
+%Gaia Freire & \includegraphics[width=\linewidth]{figs/flags/wiki/Brazil} & -- & 76  & $368.883119605263$ & $133.144444927956$ & $138.157894736842$ & $678.071593551832$ \\
+%Alexander B\"{o}s & \includegraphics[width=\linewidth]{figs/flags/wiki/Austria} & -- & 74  & $486.752309729729$ & $738.730617475333$ & $0.675675675675676$ & $2566.53267743362$ \\
+%Victor Santos & \includegraphics[width=\linewidth]{figs/flags/wiki/Brazil} & -- & 58  & $475.154842241379$ & $448.579397060009$ & $-1758.62068965517$ & $2495.01160495344$ \\
+%Mike Phan & \includegraphics[width=\linewidth]{figs/flags/wiki/Argentina} & -- & 32  & $-1018.7164078125$ & $2225.19031226962$ & $-11222.5$ & $17247.8459172805$ \\
+%Juan Manuel Pastor & \includegraphics[width=\linewidth]{figs/flags/wiki/Spain} & -- & 7  & $2743.77585714286$ & $2610.80192896143$ & $7285.71428571429$ & $7309.17231976371$ \\
+%\midrule
+%Human professionals &  & & 44852 & $485.944534475867$ & $40.3860791890452$ & $491.700704539374$ & $220.299402580617$ \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Values rounded to nearest mbb, using /sqrt(n-1) and 2-sided t0.95 n-1 freedom
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Martin Sturc & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Austria}} & 1 & 3000  & $70$ & $119$ & $-515$ & $575$ \\
+Stanislav Voloshin & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Ukraine}} & 2 & 3000  & $126$ & $103$ & $-65$ & $648$ \\
+Prakshat Shrimankar & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/India}} & 3 & 3000  & $139$ & $97$ & $174$ & $667$ \\
+Ivan Shabalin & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Russia}} & 4 & 3000  & $170$ & $99$ & $153$ & $633$ \\
+Lucas Schaumann & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Germany}} & 5 & 3000  & $207$ & $87$ & $160$ & $576$ \\
+Phil Laak & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/United_States}} & 6 & 3000  & $212$ & $143$ & $774$ & $677$ \\
+Kaishi Sun & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/China}} & 7 & 3000  & $363$ & $116$ & $5$ & $729$ \\
+Dmitry Lesnoy & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Cyprus}} & 8 & 3000  & $411$ & $138$ & $-87$ & $753$ \\
+Antonio Parlavecchio & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Italy}} & 9 & 3000  & $618$ & $212$ & $1096$ & $962$ \\
+Muskan Sethi & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/India}} & 10 & 3000  & $1009$ & $184$ & $2144$ & $1019$ \\
+\midrule
+\midrule
+Pol Dmit\textsuperscript{$\ddagger$} & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Russia}} & -- & 3000  & $1008$ & $156$ & $883$ & $793$ \\
+Tsuneaki Takeda & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Japan}} & -- & 1901  & $628$ & $231$ & $-332$ & $1228$ \\
+Youwei Qin & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Australia}} & -- & 1759  & $1311$ & $331$ & $1958$ & $1799$ \\
+Fintan Gavin & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Ireland}} & -- & 1555  & $635$ & $278$ & $-26$ & $1647$ \\
+Giedrius Talacka & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Lithuania}} & -- & 1514  & $1063$ & $338$ & $459$ & $1707$ \\
+Juergen Bachmann & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Germany}} & -- & 1088  & $527$ & $198$ & $1769$ & $1662$ \\
+Sergey Indenok & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Russia}} & -- & 852  & $881$ & $371$ & $253$ & $2507$ \\
+Sebastian Schwab & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Germany}} & -- & 516  & $1086$ & $598$ & $1800$ & $2162$ \\
+Dara O'Kearney & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Ireland}} & -- & 456  & $78$ & $250$ & $223$ & $1688$ \\
+Roman Shaposhnikov & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Russia}} & -- & 330  & $131$ & $305$ & $-898$ & $2153$ \\
+Shai Zurr & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Israel}} & -- & 330  & $499$ & $360$ & $1154$ & $2206$ \\
+Luca Moschitta & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Italy}} & -- & 328  & $444$ & $580$ & $1438$ & $2388$ \\
+Stas Tishekvich & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Israel}} & -- & 295  & $-45$ & $433$ & $-346$ & $2264$ \\
+Eyal Eshkar & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Israel}} & -- & 191  & $18$ & $608$ & $715$ & $4227$ \\
+Jefri Islam & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Austria}} & -- & 176  & $997$ & $700$ & $3822$ & $4834$ \\
+Fan Sun & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/China}} & -- & 122  & $531$ & $774$ & $-1291$ & $5456$ \\
+Igor Naumenko & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Ukraine}} & -- & 102  & $-137$ & $638$ & $851$ & $1536$ \\
+Silvio Pizzarello & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Italy}} & -- & 90  & $1500$ & $2100$ & $5134$ & $6766$ \\
+Gaia Freire & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Brazil}} & -- & 76  & $369$ & $136$ & $138$ & $694$ \\
+Alexander B\"{o}s & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Austria}} & -- & 74  & $487$ & $756$ & $1$ & $2628$ \\
+Victor Santos & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Brazil}} & -- & 58  & $475$ & $462$ & $-1759$ & $2571$ \\
+Mike Phan & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Argentina}} & -- & 32  & $-1019$ & $2352$ & $-11223$ & $18235$ \\
+Juan Manuel Pastor & \fbox{\includegraphics[width=\linewidth]{figs/flags/wiki/Spain}} & -- & 7  & $2744$ & $3521$ & $7286$ & $9856$ \\
+\midrule
+Human Professionals &  & & 44852 & $486$ & $40$ & $492$ & $220$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section*{Local Best Response of DeepStack}
+
+The goal of DeepStack, and much of the work on AI in poker, is to approximate a Nash equilibrium, i.e., produce a strategy with low exploitability.  The size of HUNL makes an explicit best-response computation intractable and so exact exploitability cannot be measured.  A common alternative is to play two strategies against each other.
+However, head-to-head performance in imperfect information games has repeatedly been shown to be a poor estimation of equilibrium approximation quality.  For example, consider an exact Nash equilibrium strategy in the game of Rock-Paper-Scissors playing against a strategy that almost always plays ``rock''.  The results are a tie, but their playing strengths in terms of exploitability are vastly different.  This same issue has been seen in heads-up limit Texas hold'em as well (Johanson, IJCAI 2011), where the relationship between head-to-head play and exploitability, which is tractable in that game, is indiscernible.  The introduction of local best response (LBR) as a technique for finding a lower-bound on a strategy's exploitability gives evidence of the same issue existing in HUNL.  Act1 and Slumbot (second and third place in the previous ACPC) were statistically indistinguishable in head-to-head play (within 20 mbb/g), but Act1 is 1300mbb/g less exploitable as measured by LBR.  This is why we use LBR to evaluate DeepStack.
+
+LBR is a simple, yet powerful, technique to produce a lower bound on a strategy's exploitability in HUNL~\cite{Lisy17:LocalBR} .  It explores a fixed set of options to find a ``locally'' good action against the strategy.  While it seems natural that more options would be better, this is not always true.  More options may cause it to find a locally good action that misses out on a future opportunity to exploit an even larger flaw in the opponent.  In fact, LBR sometimes results in larger lower bounds when not considering any bets in the early rounds, so as to increase the size of the pot and thus the magnitude of a strategy's future mistakes.  LBR was recently used to show that abstraction-based agents are significantly exploitable (see Table~\ref{tab-localbr}). The first three strategies are submissions from recent Annual Computer Poker Competitions. They all use both card and action abstraction and were found to be even more exploitable than simply folding every game in all tested cases.  The strategy ``Full Cards'' does not use any card abstraction, but uses only the sparse fold, call, pot-sized bet, all-in betting abstraction using hard translation~\cite{Schnizlein09:Translation}. Due to computation and memory requirements, we computed this strategy only for a smaller stack of 100 big blinds. Still, this strategy takes almost 2TB of memory and required approximately 14 CPU years to solve. Naturally, it cannot be exploited by LBR within the betting abstraction, but it is heavily exploitable in settings using other betting actions that require it to translate its opponent's actions, again losing more than if it folded every game.
+
+As for DeepStack, under all tested settings of LBR's available actions, it fails to find any exploitable flaw.  In fact, it is losing 350 mbb/g  or more to DeepStack.  Of particular interest is the final column aimed to exploit DeepStack's flop strategy.  The flop is where DeepStack is most dependent on its counterfactual value networks to provide it estimates through the end of the game.
+While these experiments do not prove that DeepStack is flawless, it does suggest its flaws require a more sophisticated search procedure than what is needed to exploit abstraction-based programs.
+
+\begin{table}
+\centering
+\caption{Exploitability lower bound of different programs using local best response (LBR). LBR evaluates only the listed actions in each round as shown in each row.  F, C, P, A, refer to fold, call, a pot-sized bet, and all-in, respectively. 56bets includes the actions fold, call and 56 equidistant pot fractions as defined in the original LBR paper \cite{Lisy17:LocalBR}.  $\ddagger$: Always Fold checks when not facing a bet, and so it cannot be maximally exploited without a betting action.}
+\label{tab-localbr}
+%\begin{small}
+%\begin{tabular}{c@{~}c@{}c@{~~~}c|rrrr}
+%\toprule
+%\multicolumn{4}{c}{Local Best Response Type}                                                                  & \multicolumn{4}{c}{Exploitability (mbb/g)}        \\
+%\midrule
+%Pre-flop & Flop & Turn & \multicolumn{1}{c|}{River} & \multicolumn{1}{c}{Hyperborean '14} & \multicolumn{1}{c}{Slumbot '16} & \multicolumn{1}{c}{Act1 '16} & \multicolumn{1}{c}{\cellcolor[HTML]{C0C0C0}DeepStack} \\ \midrule
+%F, C                 & F, C               & F, C              & F, C                & 721 $\pm$ ~~56 & 522 $\pm$ ~~50 & 407 $\pm$ ~~47   & \cellcolor[HTML]{C0C0C0}-428 $\pm$ ~~87      \\
+%C                  & C               & F, C, P, A          & F, C, P, A             & 3852 $\pm$ 141 & 4020 $\pm$ 115 & 2597 $\pm$ 140  & \cellcolor[HTML]{C0C0C0}-383 $\pm$ 219    \\
+%C                  & C               & 56bets               & 56bets        &  4675 $\pm$ 152 & 3763 $\pm$ 104 & 3302 $\pm$ 122               & \cellcolor[HTML]{C0C0C0}-775 $\pm$ 255 \\
+%C                  & 56bets              & F, C               & F, C        &  983 $\pm$ ~~95 & 1227 $\pm$ ~~79 & 847 $\pm$ ~~78               & \cellcolor[HTML]{C0C0C0}-615 $\pm$ 210 \\
+%\bottomrule
+%\end{tabular}
+
+\begin{tabular}{cc|rrrr}
+\toprule
+\multicolumn{2}{c}{~} & \multicolumn{4}{c}{Local best response performance (mbb/g)}\\
+\midrule
+\multirow{4}{*}{LBR Settings} & Pre-flop & \multicolumn{1}{c}{F, C} & \multicolumn{1}{c}{C} & \multicolumn{1}{c}{C} & \multicolumn{1}{c}{C}\\
+ & Flop & \multicolumn{1}{c}{F, C} & \multicolumn{1}{c}{C} & \multicolumn{1}{c}{C} & \multicolumn{1}{c}{56bets}\\ 
+ & Turn & \multicolumn{1}{c}{F, C} & \multicolumn{1}{c}{F, C, P, A} & \multicolumn{1}{c}{56bets} & \multicolumn{1}{c}{F, C}\\
+ & River& \multicolumn{1}{c}{F, C} & \multicolumn{1}{c}{F, C, P, A} & \multicolumn{1}{c}{56bets} & \multicolumn{1}{c}{F, C}\\
+\midrule
+\multicolumn{2}{c|}{Hyperborean (2014)} & 721 $\pm$ 56 & 3852 $\pm$ 141 & 4675 $\pm$ 152 & 983 $\pm$ ~~95 \\
+\multicolumn{2}{c|}{Slumbot  (2016)} & 522 $\pm$ 50 & 4020 $\pm$ 115 & 3763 $\pm$ 104 & 1227 $\pm$ ~~79  \\
+\multicolumn{2}{c|}{Act1 (2016)} & 407 $\pm$ 47 & 2597 $\pm$ 140 & 3302 $\pm$ 122 &  847 $\pm$ ~~78\\ 
+\multicolumn{2}{c|}{Always Fold} & $\ddagger$250 $\pm$ ~~0 & 750 $\pm$ ~~~~0 & 750 $\pm$ ~~~~0 & 750 $\pm$ ~~~~0 \\
+%\midrule
+\multicolumn{2}{c|}{Full Cards [100 BB]} &  -424 $\pm$ 37 & -536 $\pm$ ~~87 & 2403 $\pm$ ~~87  & 1008 $\pm$ ~~68 \\
+%\midrule
+\multicolumn{2}{c|}{\cellcolor[HTML]{C0C0C0} DeepStack} & \cellcolor[HTML]{C0C0C0}-428 $\pm$ 87 & \cellcolor[HTML]{C0C0C0}-383 $\pm$ 219 &  \cellcolor[HTML]{C0C0C0}-775 $\pm$ 255  &  \cellcolor[HTML]{C0C0C0}-602 $\pm$ 214\\
+\bottomrule
+\end{tabular}
+%\end{small}
+\end{table}
+
+\section*{DeepStack Implementation Details}
+
+Here we describe the specifics for how DeepStack employs continual re-solving and how its deep counterfactual value networks were trained.
+
+\subsection*{Continual Re-Solving}
+
+As with traditional re-solving, the re-solving step of the DeepStack algorithm solves an augmented game.  The augmented game is designed to produce a strategy for the player such that the bounds for the opponent's counterfactual values are satisfied.  DeepStack uses a modification of the original CFR-D gadget~\cite{cprg:cfrd} for its augmented game, as discussed below.  While the max-margin gadget~\cite{Moravcik16:Subgames} is designed to improve the performance of poor strategies for abstracted agents near the end of the game, the CFR-D gadget performed better in early testing.
+
+The algorithm DeepStack uses to solve the augmented game is a hybrid of vanilla CFR  \cite{ZinkevichEtAl07} and CFR$^+$ \cite{Tammelin15:CFR+}, which uses regret matching$^+$ like CFR$^+$, but does uniform weighting and simultaneous updates like vanilla CFR.  When computing the final average strategy and average counterfactual values, we omit the early iterations of CFR in the averages.
+
+A major design goal for DeepStack's implementation was to typically play at least as fast as a human would using commodity hardware and a single GPU.
+The degree of lookahead tree sparsity and the number of re-solving iterations are the principle decisions that we tuned to achieve this goal.
+These properties were chosen separately for each round to achieve a consistent speed on each round. Note that DeepStack has no fixed requirement on the density of its lookahead tree besides those imposed by hardware limitations and speed constraints.
+
+The lookahead trees vary in the actions available to the player acting, the actions available for the opponent's response, and the actions available to either player for the remainder of the round. 
+We use the end of the round as our depth limit, except on the turn when the remainder of the game is solved.  
+On the pre-flop and flop, we use trained counterfactual value networks to return values after the flop or turn card(s) are revealed.
+Only applying our value function to public states at the start of a round is particularly convenient in that that we don't need to include the bet faced as an input to the function.  
+Table~\ref{tab-lookahead} specifies lookahead tree properties for each round. 
+
+\def\halfP{\textonehalf{}P}
+\def\twoP{2P}
+
+\begin{table}[tb]
+\centering
+\caption{Lookahead re-solving specifics by round. The abbreviations of F, C, \halfP, P, \twoP, and A refer to fold, call, half of a pot-sized bet, a pot-sized bet, twice a pot-sized bet, and all in, respectively.  The final column specifies which neural network was used when the depth limit was exceeded: the flop, turn, or the auxiliary network. \label{tab-lookahead}}
+{\small\begin{tabular}{l|llllll}
+\toprule
+           & CFR          & Omitted    & First    & Second & Remaining & NN \\
+Round & Iterations & Iterations & Action & Action & Actions       & Eval \\
+\midrule
+Pre-flop & 1000  & 980 & F, C, \halfP, P, A & F, C, \halfP, P, \twoP, A & F, C, P, A & Aux/Flop \\
+Flop &  1000 & 500 & F, C, \halfP, P, A & F, C, P, A & F, C, P, A & Turn\\
+Turn & 1000 & 500 & F, C, \halfP, P, A & F, C, P, A & F, C, P, A  & --- \\
+River & 2000  & 1000 & F, C, \halfP, P, \twoP, A & F, C, \halfP, P, \twoP, A & F, C, P, A & --- \\
+ \bottomrule
+\end{tabular}}
+\end{table}
+
+The pre-flop round is particularly expensive as it requires enumerating all 22,100 possible public cards on the flop and evaluating each with the flop network.  To speed up pre-flop play, we trained an additional auxiliary neural network to estimate the expected value of the flop network over all possible flops.  However, we only used this network during the initial omitted iterations of CFR.  During the final iterations used to compute the average strategy and counterfactual values, we did the expensive enumeration and flop network evaluations.  Additionally, we cache the re-solving result for every observed pre-flop situation.  When the same betting sequence occurs again, we simply reuse the cached results rather than recomputing.  For the turn round, we did not use a neural network after the final river card, but instead solved to the end of the game.  However, we used a bucketed abstraction for all actions on the river.  For acting on the river, the re-solving includes the remainder of the game and so no counterfactual value network was used.
+
+\paragraph*{Actions in Sparse Lookahead Trees.} 
+DeepStack's sparse lookahead trees use only a small subset of the game's possible actions. The first layer of actions immediately after the current public state defines the options considered for DeepStack's next action. The only purpose of the remainder of the tree is to estimate counterfactual values for the first layer during the CFR algorithm. Table~\ref{tab:cfvs} presents how well counterfactual values can be estimated using sparse lookahead trees with various action subsets. 
+%The presented values are the average errors reported in mbb/g under various metrics---absolute ($L_1$), Euclidean, ($L_2$), and maximum absolute, ($L_{\infty}$)---over 100 random river situations, solved using 1000 iterations of CFR. In all cases for this experiment, we allow using pot fractions only in a non-decreasing order through the game. The ground truth was estimated by solving the game with 9 betting options and 4000 iterations.
+
+\begin{table}[tb]
+\centering
+\caption{Absolute ($L_1$), Euclidean ($L_2$), and maximum absolute ($L_{\infty}$) errors, in mbb/g, of counterfactual values computed with 1,000 iterations of CFR on sparse trees, averaged over 100 random river situations.  
+The ground truth values were estimated by solving the game with 9 betting options and 4,000 iterations (first row).
+%Furthermore, we can limit the depth of the betting tree for the F, C, P, A action set without substantially increasing the errors so long as the depth is greater than one. 
+}
+\label{tab:cfvs}
+\begin{tabular}{lr|rrr }
+\toprule
+ Betting & Size  & $L_1$  & $L_2$ & $L_\infty$ \\
+  \midrule
+ F, C, Min, \textonequarter{}P, \textonehalf{}P, \textthreequarters{}P, P, 2P, 3P, 10P, A [4,000 iterations]  & 555k & 0.0 & 0.0 & 0.0  \\
+ F, C, Min, \textonequarter{}P, \textonehalf{}P, \textthreequarters{}P, P, 2P, 3P, 10P, A  & 555k & 18.06 & 0.891 & 0.2724 \\
+  F, C, 2P, A & 48k & 64.79 & 2.672 & 0.3445\\
+  F, C, \halfP, A & 100k & 58.24 & 3.426 & 0.7376 \\
+  F, C, P, A & 61k & 25.51 & 1.272 & 0.3372 \\
+  F, C, \halfP, P, A & 126k & 41.42 & 1.541 & 0.2955 \\
+  F, C, P, 2P, A & 204k & 27.69 & 1.390 & 0.2543 \\
+  F, C, \halfP, P, 2P, A & 360k & 20.96 & 1.059 & 0.2653 \\
+ \bottomrule
+\end{tabular}
+\end{table}
+
+The results show that the F, C, P, A, actions provide an excellent tradeoff between computational requirements via the size of the solved lookahead tree and approximation quality. Using more actions quickly increases the size of the lookahead tree, but does not substantially improve errors. Alternatively, using a single betting action that is not one pot has a small effect on the size of the tree, but causes a substantial error increase.
+
+To further investigate the effect of different betting options, Table~\ref{tab-lbr_various_actions} presents the results of evaluating DeepStack with different action sets using LBR.
+We used setting of LBR that proved most effective against the default set of DeepStack actions (see Table~\ref{tab-lookahead}).
+While the extent of the variance in the 10,000 hand evaluation shown in Table~\ref{tab-lbr_various_actions} prevents us from declaring a best set of actions with certainty, the crucial point is that LBR is significantly losing to each of them, and that we can produce play that is difficult to exploit even choosing from a small number of actions.  Furthermore, the improvement of a small number of additional actions is not dramatic.
+
+\begin{table}[tb]
+\centering
+\caption{Performance of LBR exploitation of DeepStack with different actions allowed on the first level of its lookahead tree using the best LBR configuration against the default version of DeepStack. LBR cannot exploit DeepStack regardless of its available actions.}
+\label{tab-lbr_various_actions}
+\begin{tabular}{lr}
+\toprule
+First level actions & LBR performance\\
+\midrule
+F, C, P, A & -479 $\pm$ 216\\
+Default   & -383 $\pm$ 219\\
+F, C, \halfP, P, 1\halfP, 2P, A & -406 $\pm$ 218\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph*{Opponent Ranges in Re-Solving.}
+Continual re-solving does not require keeping track of the opponent's range.  The re-solving step essentially reconstructs a suitable range using the bounded counterfactual values.  In particular, the CFR-D gadget does this by giving the opponent the option, after being dealt a uniform random hand, of terminating the game (T) instead of following through with the game (F), allowing them to simply earn that hand's bound on its counterfactual value.  Only hands which are valuable to bring into the subgame will then be observed by the re-solving player.  However, this process of the opponent learning which hands to follow through with can make re-solving require many iterations.  An estimate of the opponent's range can be used to effectively warm-start the choice of opponent ranges, and help speed up the re-solving.
+
+One conservative option is to replace the uniform random deal of opponent hands with any distribution over hands as long as it assigns non-zero probability to every hand.  For example, we could linearly combine an estimated range of the opponent from the previous re-solve (with weight $b$) and a uniform range (with weight $1-b$).  This approach still has the same theoretical guarantees as re-solving, but can reach better approximate solutions in fewer iterations.  Another option is more aggressive and sacrifices the re-solving guarantees when the opponent's range estimate is wrong.  It forces the opponent with probability $b$ to follow through into the game with a hand sampled from the estimated opponent range.  With probability $1-b$ they are given a uniform random hand and can choose to terminate or follow through.  This could prevent the opponent's strategy from reconstructing a correct range, but can speed up re-solving further when we have a good opponent range estimate.
+
+DeepStack uses an estimated opponent range during re-solving only for the first action of a round, as this is the largest lookahead tree to re-solve.  The range estimate comes from the last re-solve in the previous round.  When DeepStack is second to act in the round, the opponent has already acted, biasing their range, so we use the conservative approach.  When DeepStack is first to act, though, the opponent could only have checked or called since our last re-solve.  Thus, the lookahead has an estimated range following their action.  So in this case, we use the aggressive approach.  In both cases, we set $b=0.9$.
+ 
+\paragraph{Speed of Play.} 
+The re-solving computation and neural network evaluations are both implemented in Torch7~\cite{collobert2011torch7} and run on a single NVIDIA GeForce GTX 1080 graphics card. 
+This makes it possible to do fast batched calls to the counterfactual value networks for multiple public subtrees at once, which is key to making DeepStack fast.
+
+Table \ref{tab-times} reports the average times between the end of the previous (opponent or chance) action and submitting the next action by both humans and DeepStack in our study.  DeepStack, on average, acted considerably faster than our human players.  It should be noted that some human players were playing up to four games simultaneously (although few players did more than two), and so the human players may have been focused on another game when it became their turn to act.
+
+\begin{table}[tb]
+\centering
+\caption{Thinking times for both humans and DeepStack.
+DeepStack's extremely fast pre-flop speed shows that pre-flop situations often resulted in cache hits.}
+\label{tab-times}
+\begin{tabular}{l|ll|ll}
+\toprule
+           & \multicolumn{4}{c}{Thinking Time (s)} \\
+& \multicolumn{2}{c}{Humans} & \multicolumn{2}{c}{DeepStack} \\
+Round & Median & Mean & Median & Mean \\
+\midrule
+Pre-flop & 10.3 & 16.2 & 0.04 & 0.2 \\
+Flop & 9.1 & 14.6 & 5.9 & 5.9 \\
+Turn & 8.0 & 14.0 & 5.4 & 5.5 \\
+River & 9.5 & 16.2 & 2.2 & 2.1 \\
+\midrule
+Per Action & 9.6 & 15.4 & 2.3 & 3.0 \\
+Per Hand & 22.0 & 37.4 & 5.7 & 7.2 \\
+ \bottomrule
+\end{tabular}
+\end{table}
+
+\subsection*{Deep Counterfactual Value Networks}
+
+DeepStack uses two counterfactual value networks, one for the flop and one for the turn, as well as an auxiliary network that gives counterfactual values at the end of the pre-flop.  In order to train the networks, we generated random poker situations at the start of the flop and turn.  Each poker situation is defined by the pot size, ranges for both players, and dealt public cards.  The complete betting history is not necessary as the pot and ranges are a sufficient representation.  The output of the network are vectors of counterfactual values, one for each player.  The output values are interpreted as fractions of the pot size to improve generalization across poker situations. 
+
+The training situations were generated by first sampling a pot size from a fixed distribution which was designed to approximate observed pot sizes from older HUNL programs.\footnote{The fixed distribution selects an interval from the set of intervals $\{[100, 100),$ $[200,400),$ $[400, 2000),$ $[2000, 6000),$ $[6000, 19950]\}$ with uniform probability, followed by uniformly selecting an integer from within the chosen interval.}
+The player ranges for the training situations need to cover the space of possible ranges that CFR might encounter during re-solving, not just ranges that are likely part of a solution.  So we generated pseudo-random ranges that attempt to cover the space of possible ranges.  We used a recursive procedure $R(S, p)$, that assigns probabilities to the hands in the set $S$ that sum to probability $p$, according to the following procedure.
+\begin{enumerate}
+\item If $|S| =1$, then $\Pr(s) = p$.
+\item Otherwise,
+\begin{enumerate}
+\item Choose $p_1$ uniformly at random from the interval $(0, p)$, and let $p_2 = p-p_1$.
+\item Let $S_1 \subset S$ and $S_2 = S \setminus S_1$ such that $|S_1| = \left\lfloor|S|/2\right\rfloor$ and all of the hands in $S_1$ have a hand strength no greater than hands in $S_2$.  Hand strength is the probability of a hand beating a uniformly selected random hand from the current public state.
+\item Use $R(S_1, p_1)$ and $R(S_2, p_2)$ to assign probabilities to hands in $S=S_1 \bigcup S_2$.
+\end{enumerate}
+\end{enumerate}
+Generating a range involves invoking $R(\mbox{\em all hands}, 1)$.
+To obtain the target counterfactual values for the generated poker situations for the main networks, the situations were approximately solved using 1,000 iterations of CFR$^+$ with only betting actions fold, call, a pot-sized bet, and all-in.  For the turn network, ten million poker turn situations (from after the turn card is dealt) were generated and solved with 6,144 CPU cores of the Calcul Qu\'{e}bec MP2 research cluster, using over 175 core years of computation time.  For the flop network, one million poker flop situations (from after the flop cards are dealt) were generated and solved.  These situations were solved using DeepStack's depth limited solver with the turn network used for the counterfactual values at public states immediately after the turn card.  We used a cluster of 20 GPUS and one-half of a GPU year of computation time.  For the auxiliary network, ten million situations were generated and the target values were obtained by enumerating all 22,100 possible flops and averaging the counterfactual values from the flop network's output.  
+
+\paragraph*{Neural Network Training.}
+All networks were trained using built-in Torch7 libraries, with the Adam stochastic gradient descent procedure \cite{kingma2014adam} minimizing the average of the Huber losses~\cite{huber1964} over the counterfactual value errors.  Training used a mini-batch size of 1,000, and a learning rate 0.001, which was decreased to 0.0001 after the first 200 epochs. 
+Networks were trained for approximately 350 epochs over two days on a single GPU, and the epoch with the lowest validation loss was chosen. 
+
+\paragraph*{Neural Network Range Representation.}
+In order to improve generalization over input player ranges, we map the distribution of individual hands (combinations of public and private cards) into distributions of buckets.  The buckets were generated using a clustering-based abstraction technique, which cluster strategically similar hands using $k$-means clustering with earth mover's distance over hand-strength-like features~\cite{Johanson13:Abstraction,Ganzfried14:EMD}.  For both the turn and flop networks we used 1,000 clusters and map the original ranges into distributions over these clusters as the first layer of the neural network (see Figure~3 of the main article).  This bucketing step was not used on the auxiliary network as there are only 169 strategically distinct hands pre-flop, making it feasible to input the distribution over distinct hands directly.
+
+\paragraph*{Neural Network Accuracies.}
+The turn network achieved an average Huber loss of 0.016 of the pot size on the training set and 0.026 of the pot size on the validation set.   The flop network, with a much smaller training set, achieved an average Huber loss of 0.008 of the pot size on the training set, but 0.034 of the pot size on the validation set.  Finally, 
+ the auxiliary network had average Huber losses of 0.000053 and 0.000055 on the training and validation set, respectively.
+Note that there are, in fact, multiple Nash equilibrium solutions to these poker situations, with each giving rise to different counterfactual value vectors.  So, these losses may overestimate the true loss as the network may accurately model a different equilibrium strategy.
+
+\paragraph*{Number of Hidden Layers.}
+We observed in early experiments that the neural network had a lower validation loss with an increasing number of hidden layers.  From these experiments, we chose to use seven hidden layers in an attempt to tradeoff accuracy, speed of execution, and the available memory on the GPU.  The result of a more thorough experiment examining the turn network accuracy as a function of the number of hidden layers is in Figure~\ref{fig:nn-errors-by-layers}.  It appears that seven hidden layers is more than strictly necessary as the validation error does not improve much beyond five.  However, all of these architectures were trained using the same ten million turn situations.  With more training data it would not be surprising to see the larger networks see a further reduction in loss due to their richer representation power.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/nn-errors-by-layers}
+\caption{Huber loss with different numbers of hidden layers in the neural network.}\label{fig:nn-errors-by-layers}
+\end{figure}
+
+
+\section*{Proof of Theorem 1}
+
+The formal proof of Theorem 1, which establishes the soundness of DeepStack's
+depth-limited continual re-solving, is conceptually easy to follow.   It
+requires three parts.  First, we establish that the
+exploitability introduced in a re-solving step has two linear components; one due
+to approximately solving the subgame, and one due to the error in DeepStack's
+counterfactual value network (see Lemmas 1 through 5).  Second, we enable estimates of
+subgame counterfactual values that do not arise from actual subgame strategies (see Lemma 6).
+Together, parts one and two enable us to use DeepStack's counterfactual value
+network for a single re-solve.\footnote{The first part is a generalization and improvement
+on the re-solving exploitability bound given by Theorem 3 in Burch et al.~\cite{cprg:cfrd},
+and the second part generalizes the bound on decomposition regret given by Theorem 2 of
+the same work.}  Finally, we show that using the opponent's values from the
+best action, rather than the observed action, does not increase overall
+exploitability (see Lemma 7).  This allows us to carry forward estimates of the opponent's
+counterfactual value, enabling continual re-solving.  Put together,
+these three parts bound the error after any finite number of continual re-solving
+steps, concluding the proof.  We now formalize each step.
+
+There are a number of concepts we use throughout this section.
+We use the notation from Burch et al.~\cite{cprg:cfrd} without any
+introduction here.  We assume player 1 is performing the continual
+re-solving.  We call player 2 the opponent.
+%In all situations, we only care about situations where opponent CFV increases
+%In the proof, we're only interested in $\mathcal{I}^S_2$, the opponent information sets at the root of subtree gadget game.
+We only consider the re-solve player's strategy $\sigma$, as the opponent is always using a best response to $\sigma$.
+All values are considered with respect to the opponent, unless specifically stated.
+We say $\sigma$ is $\epsilon$-exploitable if the opponent's best
+response value against $\sigma$ is no more than $\epsilon$ away from
+the game value for the opponent.
+
+A public state $S$ corresponds to the root of an imperfect information subgame.
+We write $\mathcal{I}_2^S$ for the collection of player 2 information sets in $S$. 
+Let $G\langle S, \sigma, w\rangle$ be the subtree gadget game (the re-solving game of Burch et al.~\cite{cprg:cfrd}), where $S$ is some public state, $\sigma$ is used to get player 1 reach probabilities $\pi^{\sigma}_{-2}(h)$ for each $h \in S$, and $w$ is a vector where $w_I$ gives the value of player 2 taking the terminate action (T) from information set $I \in \mathcal{I}_2^S$.
+Let 
+\begin{align*}
+\text{BV}_I(\sigma) = \max_{\sigma^*_2}\sum_{h \in I} \pi^{\sigma}_{-2}(h) u^{\sigma,\sigma_2^*}(h) / \pi^{\sigma}_{-2}(I),
+\end{align*}
+be the counterfactual value for $I$ given we play $\sigma$ and our opponent is playing a best response.
+For a subtree strategy $\sigma^S$, we write $\sigma \to \sigma^S$ for the strategy that plays according to $\sigma^S$ for any state in the subtree and according to $\sigma$ otherwise.  For the gadget game $G\langle S, \sigma, w\rangle$, the gadget value of a subtree strategy $\sigma^S$ is defined to be:
+\begin{align*}
+  \text{GV}^S_{w,\sigma}(\sigma^S) = \sum_{I \in \mathcal{I}^S_2} \max(w_I,\text{BV}_I(\sigma\to\sigma^S)),
+\end{align*}
+and the underestimation error is defined to be:
+\begin{align*}
+  \text{U}^S_{w,\sigma} = \min_{\sigma^S} \text{GV}^S_{w,\sigma}(\sigma^S) - \sum_{I \in \mathcal{I}^S_2}w_I.
+\end{align*}
+
+\begin{lemma}
+  The game value of a gadget game $G\langle S, \sigma, w\rangle$ is 
+\begin{equation*}\sum_{I \in \mathcal{I}^S_2} w_I + \text{U}^S_{w,\sigma}.\end{equation*}
+  \label{lem:underestimation}
+\end{lemma}
+\begin{proof}
+Let $\tilde{\sigma}_2^S$ be a gadget game strategy for player $2$ which must choose from the F and T actions at starting information set $I$.
+Let $\tilde{u}$ be the utility function for the gadget game.
+\begin{align*}
+\min_{\sigma_1^S}\max_{\tilde{\sigma}_2^S} \tilde{u}(\sigma_1^S,\tilde{\sigma}_2^S)
+&= \min_{\sigma_1^S}\max_{\sigma_2^S}\sum_{I \in \mathcal{I}^S_2} \frac{\pi^{\sigma}_{-2}(I)}{\sum_{I' \in \mathcal{I}^S_2} \pi^{\sigma}_{-2}(I')} \max_{a \in \{F,T\}} \tilde{u}^{\sigma^S}(I,a)\\
+&= \min_{\sigma_1^S}\max_{\sigma_2^S}\sum_{I \in \mathcal{I}^S_2} \max( w_I, \sum_{h \in I} \pi_{-2}^{\sigma}(h) u^{\sigma^S}(h))
+\intertext{A best response can maximize utility at each information set independently:}
+&= \min_{\sigma_1^S}\sum_{I \in \mathcal{I}^S_2} \max( w_I, \max_{\sigma_2^S} \sum_{h \in I} \pi_{-2}^{\sigma}(h) u^{\sigma^S}(h))\\
+&= \min_{\sigma_1^S}\sum_{I \in \mathcal{I}^S_2} \max( w_I, \text{BV}_I(\sigma\to\sigma_1^S))\\
+&= \text{U}^S_{w,\sigma} + \sum_{I \in \mathcal{I}^S_2}  w_I
+\end{align*}
+\end{proof}
+
+\begin{lemma}
+  If our strategy $\sigma^S$ is $\epsilon$-exploitable in the gadget game
+  $G\langle S,\sigma,w\rangle$, then $\text{GV}^S_{w,\sigma}(\sigma^S) \le \sum_{I \in \mathcal{I}^S_2} w_I +
+  \text{U}^S_{w,\sigma} + \epsilon$
+  \label{lem:resolve_underestimation}
+\end{lemma}
+\begin{proof}
+  This follows from Lemma~\ref{lem:underestimation} and the definitions
+  of $\epsilon$-Nash, $\text{U}^S_{w,\sigma}$, and $\text{GV}^S_{w,\sigma}(\sigma^S)$.
+\end{proof}
+
+\begin{lemma}
+  Given an $\epsilon_O$-exploitable $\sigma$ in the original game, if
+  we replace a subgame with a strategy $\sigma^S$ such that
+  $\text{BV}_I(\sigma \to \sigma^S) \le w_I$ for all $I \in \mathcal{I}^S_2$, then the new combined
+  strategy has an exploitability no more than $\epsilon_O + \text{EXP}^S_{w,\sigma}$ where
+  \begin{align*}
+    \text{EXP}^S_{w,\sigma} = \sum_{I \in \mathcal{I}^S_2} \max( \text{BV}_I( \sigma ), w_I ) - \sum_{I \in \mathcal{I}^S_2} \text{BV}_I( \sigma )
+  \end{align*}
+  \label{lem:error}
+\end{lemma}
+\begin{proof}
+  We only care about the information sets where the opponent's
+  counterfactual value increases, and a worst case upper bound occurs
+  when the opponent best response would reach every such information
+  set with probability 1, and never reach information sets where the
+  value decreased.
+
+Let $Z[S] \subseteq Z$ be the set of terminal states reachable from some $h \in S$ and let $v_2$ be the game value of the full game for player 2. Let $\sigma_2$ be a best response to $\sigma$ and let $\sigma^S_2$ be the part of $\sigma_2$ that plays in the subtree rooted at $S$. Then necessarily $\sigma^S_2$ achieves counterfactual value $\text{BV}_I(\sigma)$ at each $I \in \mathcal{I}^S_2$.
+
+\begin{alignat*}{2}
+\max_{\sigma_2^*} &\mathrlap{(u(\sigma\to\sigma^S,\sigma_2^*))}\\
+&= \max_{\sigma_2^*} &&\biggl[\sum_{z \in Z[S]} \pi_{-2}^{\sigma \to \sigma^S}(z) \pi_2^{\sigma_2^*}(z) u(z) + \sum_{z \in Z \setminus Z[S]} \pi_{-2}^{\sigma \to \sigma^S}(z) \pi_2^{\sigma_2^*}(z) u(z) \biggr]\\
+&= \max_{\sigma_2^*} &&\biggl[\sum_{z \in Z[S]} \pi_{-2}^{\sigma \to \sigma^S}(z) \pi_2^{\sigma_2^*}(z) u(z) - \sum_{z \in Z[S]} \pi_{-2}^{\sigma}(z) \pi_2^{\sigma_2^*\to\sigma_2^S}(z)u(z)\\
+&&&+  \sum_{z \in Z[S]} \pi_{-2}^{\sigma}(z) \pi_2^{\sigma_2^*\to\sigma_2^S}(z)u(z)+ \sum_{z \in Z \setminus Z[S]} \pi_{-2}^{\sigma}(z) \pi_2^{\sigma_2^*}(z) u(z) \biggr]\\
+&\leq \max_{\sigma_2^*} &&\biggl[\sum_{z \in Z[S]} \pi_{-2}^{\sigma \to \sigma^S}(z) \pi_2^{\sigma_2^*}(z) u(z) - \sum_{z \in Z[S]} \pi_{-2}^{\sigma}(z) \pi_2^{\sigma_2^*\to\sigma_2^S}(z)u(z)\biggr]\\
+&&&+\max_{\sigma_2^*}\biggl[ \sum_{z \in Z[S]} \pi_{-2}^{\sigma}(z) \pi_2^{\sigma_2^*\to\sigma_2^S}(z)u(z)+ \sum_{z \in Z \setminus Z[S]} \pi_{-2}^{\sigma}(z) \pi_2^{\sigma_2^*}(z) u(z) \biggr]\\
+&\leq \max_{\sigma_2^*} &&\biggl[\sum_{I \in \mathcal{I}^S_2} \sum_{h \in I}\pi_{-2}^\sigma(h)\pi_2^{\sigma_2^*}(h)u^{\sigma^S,\sigma_2^*}(h) \\
+  &&& - \sum_{I \in \mathcal{I}^S_2} \sum_{h \in I}\pi_{-2}^\sigma(h)\pi_2^{\sigma_2^*}(h)u^{\sigma,\sigma_2^S}(h)\biggr] + \max_{\sigma_2^*} (u(\sigma,\sigma_2^*))
+\intertext{By perfect recall $\pi_2(h)=\pi_2(I)$ for each $h \in I$:}
+&\leq \max_{\sigma_2^*} &&\biggl[\sum_{I \in \mathcal{I}^S_2} \pi_2^{\sigma_2^*}(I)\biggl(\sum_{h \in I}\pi_{-2}^\sigma(h)u^{\sigma^S,\sigma_2^*}(h) - \sum_{h \in I}\pi_{-2}^\sigma(h)u^{\sigma,\sigma_2^S}(h)\biggr)\biggr]
+\\ &&&+ v_2 + \epsilon_O\\
+&= \max_{\sigma_2^*} &&\biggl[\mathrlap{\sum_{I \in \mathcal{I}^S_2}\pi_2^{\sigma_2^*}(I)\pi_{-2}^{\sigma}(I)\biggl(\text{BV}_I(\sigma \to \sigma^S)-\text{BV}_I(\sigma)\biggr)\biggr]+ v_2 + \epsilon_O}\\
+&\leq &&\biggl[\sum_{I \in \mathcal{I}^S_2}\max(\text{BV}_I(\sigma \to \sigma^S)-\text{BV}_I(\sigma),0)\biggr]+ v_2 + \epsilon_O\\
+&\leq &&\biggl[\sum_{I \in \mathcal{I}^S_2}\max(w_I-\text{BV}_I(\sigma),\text{BV}_I(\sigma)-\text{BV}_I(\sigma))\biggr]+ v_2 + \epsilon_O\\
+&= &&\biggl[\sum_{I \in \mathcal{I}^S_2}\max(\text{BV}_I(\sigma),w_I) - \sum_{I \in \mathcal{I}^S_2} \text{BV}_I( \sigma )\biggr]+ v_2 + \epsilon_O
+\end{alignat*}
+\end{proof}
+
+\begin{lemma}
+  Given an $\epsilon_O$-exploitable $\sigma$ in the original game, if
+  we replace the strategy in a subgame with a strategy $\sigma^S$ that
+  is $\epsilon_S$-exploitable in the gadget game $G\langle S, \sigma,
+  w\rangle$, then the new combined strategy has an exploitability no
+  more than $\epsilon_O + \text{EXP}^S_{w,\sigma} +
+  \text{U}^S_{w,\sigma} + \epsilon_S$.
+  \label{lem:resolve_error}
+\end{lemma}
+\begin{proof}
+  We use that $\max(a,b) = a + b - \min(a,b)$. From applying Lemma~\ref{lem:error} with\\ 
+  ${w_I = \text{BV}_I(\sigma \to \sigma^S)}$ and expanding 
+  ${\text{EXP}^S_{\text{BV}(\sigma \to \sigma^S),\sigma}}$ 
+  we get exploitability no more than\\ ${\epsilon_O
+  - \sum_{I \in \mathcal{I}^S_2} \text{BV}_I( \sigma )}$ plus
+  \begin{align*}
+    \sum_{I \in \mathcal{I}^S_2} &\max( \text{BV}_I( \sigma \to \sigma^S), \text{BV}_I( \sigma ) )  \\
+    &\le \sum_{I \in \mathcal{I}^S_2} \max( \text{BV}_I( \sigma \to \sigma^S ), \max( w_I, \text{BV}_I( \sigma ) )  \\
+    &= \sum_{I \in \mathcal{I}^S_2} \bigl( \text{BV}_I( \sigma \to \sigma^S ) + \max( w_I, \text{BV}_I( \sigma )) \\
+    &\qquad - \min( \text{BV}_I( \sigma \to \sigma^S ), \max( w_I, \text{BV}_I( \sigma ))) \bigr)\\
+    &\leq \sum_{I \in \mathcal{I}^S_2} \bigl( \text{BV}_I( \sigma \to \sigma^S ) + \max( w_I, \text{BV}_I( \sigma )) \\
+    &\qquad - \min( \text{BV}_I( \sigma \to \sigma^S ), w_I) \bigr)\\
+    &= \sum_{I \in \mathcal{I}^S_2} \bigl( \max( w_I, \text{BV}_I( \sigma )) + \max( w_I, \text{BV}_I( \sigma\to\sigma^S ) ) - w_I \bigr) \\
+    &= \sum_{I \in \mathcal{I}^S_2} \max( w_I, \text{BV}_I( \sigma ) ) + \sum_{I \in \mathcal{I}^S_2} \max( w_I, \text{BV}_I( \sigma\to\sigma^S ))  - \sum_{I \in \mathcal{I}^S_2} w_I \\
+  \end{align*}
+  From Lemma~\ref{lem:resolve_underestimation} we get
+  \begin{align*}
+    \le \sum_{I \in \mathcal{I}^S_2} \max( w_I, \text{BV}_I( \sigma ) ) + \text{U}^S_{w,\sigma} + \epsilon_S \\
+  \end{align*}
+  Adding $\epsilon_O - \sum_I \text{BV}_I( \sigma )$ we get the
+  upper bound $\epsilon_O + \text{EXP}^S_{w,\sigma} + \text{U}^S_{w,\sigma} + \epsilon_S$.
+\end{proof}
+
+\begin{lemma}
+  Assume we are performing one step of re-solving on subtree $S$, with
+  constraint values $w$ approximating opponent best-response values to
+  the previous strategy $\sigma$, with an approximation error bound
+  $\sum_I |w_I-\text{BV}_I(\sigma)| \le \epsilon_E$. Then we have
+  $\text{EXP}^S_{w,\sigma} + \text{U}^S_{w,\sigma} \le \epsilon_E$.
+  \label{lem:resolve_step}
+\end{lemma}
+\begin{proof}
+  $\text{EXP}^S_{w,\sigma}$ measures the amount that the $w_I$ exceed $\text{BV}_I(\sigma)$, while $\text{U}^S_{w,\sigma}$ bounds the amount that the $w_I$ underestimate $\text{BV}_I(\sigma\to\sigma^S)$ for any $\sigma^S$, including the original $\sigma$. Thus, together they are bounded by $|w_I-\text{BV}_I(\sigma)|$:
+  \begin{align*}
+    \text{EXP}^S_{w,\sigma} + \text{U}^S_{w,\sigma} &= \sum_{I \in \mathcal{I}^S_2} \max( \text{BV}_I( \sigma ), w_I ) -
+  \sum_{I \in \mathcal{I}^S_2} \text{BV}_I( \sigma )\\
+    &\qquad+ \min_{\sigma^S} \sum_{I \in \mathcal{I}^S_2} \max(w_I,\text{BV}_I(\sigma\to\sigma^S)) - \sum_{I \in \mathcal{I}^S_2}w_I\\
+    &\leq \sum_{I \in \mathcal{I}^S_2} \max( \text{BV}_I( \sigma ), w_I ) - \sum_{I \in \mathcal{I}^S_2} \text{BV}_I( \sigma )\\
+    &\qquad + \sum_{I \in \mathcal{I}^S_2} \max(w_I,\text{BV}_I(\sigma)) - \sum_{I \in \mathcal{I}^S_2}w_I\\
+    &= \sum_{I \in \mathcal{I}^S_2} \left[\max(w_I - \text{BV}_I(\sigma),0) + \max(\text{BV}_I(\sigma)-w_I,0)\right]\\
+    &= \sum_{I \in \mathcal{I}^S_2} |w_I - \text{BV}_I(\sigma)| \leq \epsilon_E
+  \end{align*}
+\end{proof}
+
+\begin{lemma}
+  Assume we are solving a game $G$ with $T$ iterations of CFR-D where
+  for both players $p$, subtrees $S$, and times $t$, we use subtree
+  values $v_I$ for all information sets $I$ at the root of $S$ from
+  some suboptimal black box estimator. If the estimation error is
+  bounded, so that $\min_{\sigma_S^* \in \text{NE}_S} \sum_{I \in
+    \mathcal{I}^S_2} |v^{\sigma_S^*} (I)-v_I| \le \epsilon_E$, then
+  the trunk exploitability is bounded by $k_G/\sqrt{T} +
+  j_G\epsilon_E$ for some game specific constant $k_G,j_G \ge 1$ which
+  depend on how the game is split into a trunk and subgames.
+  \label{lem:cfrd_estimator}
+\end{lemma}
+\begin{proof}
+  This follows from a modified version the proof of Theorem 2 of
+  Burch~et al.~\cite{cprg:cfrd}, which uses a fixed error $\epsilon$
+  and argues by induction on information sets. Instead, we argue
+  by induction on entire public states.
+
+  For every public state $s$, let $N_s$ be the number of subgames
+  reachable from $s$, including any subgame rooted at $s$. Let $Succ(s)$
+  be the set of our public states which are reachable from $s$ without going through
+  another of our public states on the way. Note that if $s$ is in the trunk, then every
+  $s' \in Succ(s)$ is in the trunk or is the root of a subgame. Let $D_{TR}(s)$
+  be the set of our trunk public states reachable from $s$, including $s$ if $s$ is in the trunk.
+  We argue that for any public state $s$ where we act in the trunk or at the root of a subgame
+  \begin{equation}
+  \label{eqn:inductiveregret}
+  \sum_{I \in s} R^{T,+}_{full}(I) \leq \sum_{s' \in D_{TR}(s)} \sum_{I \in s'} R^{T,+}(I) + TN_s\epsilon_E
+  \end{equation}
+  First note that if no subgame is reachable from $s$, then $N_s = 0$
+  and the statement follows from Lemma 7 of \cite{ZinkevichEtAl07}.
+  For public states from which a subgame is reachable, we argue by
+  induction on $|D_{TR}(s)|$. 
+   
+  For the base case, if $|D_{TR}(s)| = 0$ then $s$ is the root of a subgame $S$,
+  and by assumption there is a Nash Equilibrium subgame strategy $\sigma_S^*$
+  that has regret no more than $\epsilon_E$. If we implicitly play $\sigma_S^*$
+  on each iteration of CFR-D, we thus accrue $\sum_{I \in s} R^{T,+}_{full}(I) \leq T\epsilon_E$.
+
+  For the inductive hypothesis, we assume that (\ref{eqn:inductiveregret}) holds for all $s$
+  such that $|D_{TR}(s)| < k$.
+
+  Consider a public state $s$ where $|D_{TR}(s)| = k$. By Lemma 5 of \cite{ZinkevichEtAl07}
+  we have
+  \begin{align*}
+  \sum_{I \in s} R^{T,+}_{full}(I) &\leq \sum_{I \in s}\left[R^T(I) + \sum_{I' \in Succ(I)}R^{T,+}_{full}(I)\right]\\
+  &= \sum_{I \in s} R^T(I) + \sum_{s' \in Succ(s)} \sum_{I' \in s'} R^{T,+}_{full}(I')
+  \end{align*}
+
+  For each $s' \in Succ(s)$, $D(s') \subset D(s)$ and $s \not\in D(s')$, so $|D(s')|<|D(s)|$
+  and we can apply the inductive hypothesis to show
+  \begin{align*}
+  \sum_{I \in s} R^{T,+}_{full}(I) &\leq \sum_{I \in s} R^T(I) + \sum_{s' \in Succ(s)} \left[\sum_{s'' \in D(s')}\sum_{I \in s''} R^{T,+}(I) + TN_{s'}\epsilon_E\right]\\
+  &\leq \sum_{s' \in D(s)}\sum_{I \in s'} R^{T,+}(I) + T\epsilon_E \sum_{s' \in Succ(s)} N_{s'}\\
+  &= \sum_{s' \in D(s)}\sum_{I \in s'} R^{T,+}(I) + T\epsilon_E N_s
+  \end{align*}
+
+  This completes the inductive argument. By using regret matching in the trunk, we ensure
+  $R^T(I) \leq \Delta\sqrt{AT}$, proving the lemma for $k_G = \Delta|\mathcal{I_{TR}}|\sqrt{A}$
+  and $j_G = N_{root}$.
+\end{proof}
+
+\begin{lemma}
+  Given our strategy $\sigma$, if the opponent is acting at the root
+  of a public subtree $S$ from a set of actions $A$, with opponent
+  best-response values $\text{BV}_{I \cdot a}(\sigma)$ after each
+  action $a \in A$, then replacing our subtree strategy with any
+  strategy that satisfies the opponent constraints $w_I = \max_{a \in
+    A} \text{BV}_{I \cdot a}(\sigma)$ does not increase our
+  exploitability.
+  \label{lem:opp_constraint_values}
+\end{lemma}
+\begin{proof}
+  If the opponent is playing a best response, every counterfactual
+  value $w_I$ before the action must either satisfy $w_I =
+  \text{BV}_I(\sigma) = \max_{a \in A} \text{BV}_{I \cdot a}(\sigma)$,
+  or not reach state $s$ with private information $I$. If we replace
+  our strategy in S with a strategy $\sigma'_S$ such that
+  $\text{BV}_{I \cdot a}(\sigma'_S) \le \text{BV}_I(\sigma)$ we
+  preserve the property that $\text{BV}_I(\sigma') =
+  \text{BV}_I(\sigma)$.
+\end{proof}
+
+\begin{theorem}
+  Assume we have some initial opponent constraint values $w$ from a
+  solution generated using at least $T$ iterations of CFR-D, we use at
+  least $T$ iterations of CFR-D to solve each re-solving game, and we
+  use a subtree value estimator such that $\min_{\sigma_S^* \in
+    \text{NE}_S} \sum_{I \in \mathcal{I}^S_2} |v^{\sigma_S^*} (I)-v_I|
+  \le \epsilon_E$, then after $d$ re-solving steps the exploitability
+  of the resulting strategy is no more than $(d+1)k/\sqrt{T} +
+  (2d+1)j\epsilon_E$ for some constants $k,j$ specific to both the
+  game and how it is split into subgames.
+  \label{thm:deepstack}
+\end{theorem}
+\begin{proof}
+  Continual re-solving begins by solving from the root of the entire game, which we label as
+  subtree $S_0$. We use CFR-D with the value estimator in place of subgame solving 
+  in order to generate an initial strategy $\sigma_0$ for playing in $S_0$. 
+  By Lemma~\ref{lem:cfrd_estimator}, the exploitability
+  of $\sigma_0$ is no more than $k_0/\sqrt{T} + j_0\epsilon_E$.
+  
+  For each step of continual re-solving $i = 1,...,d$, we are re-solving some
+  subtree $S_i$. From the previous step of re-solving, we have approximate opponent 
+  best-response counterfactual values $\widetilde{\mathrm{BV}}_I(\sigma_{i-1})$ for each
+  $I \in \mathcal{I}^{S_{i-1}}_2$, which by the estimator bound satisfy 
+  $|\sum_{I \in \mathcal{I}^{S_{i-1}}_2} BV_I(\sigma_{i-1}) - \widetilde{\mathrm{BV}}_I(\sigma_{i-1})| \leq \epsilon_E$.
+  Updating these values at each public state between $S_{i-1}$ and $S_{i}$ 
+  as described in the paper yields approximate values $\widetilde{\mathrm{BV}}_I(\sigma_{i-1})$ 
+  for each $I \in \mathcal{I}^{S_i}_2$ which by Lemma~\ref{lem:opp_constraint_values}
+  can be used as constraints $w_{I,i}$ in re-solving. Lemma~\ref{lem:resolve_step} with these constraints
+  gives us the bound $\text{EXP}^{S_i}_{w_i,\sigma_{i-1}} +
+  \text{U}^{S_i}_{w_i,\sigma_{i-1}} \le \epsilon_E$.
+  Thus by Lemma~\ref{lem:resolve_error} and Lemma~\ref{lem:cfrd_estimator} we
+  can say that the increase in exploitability from $\sigma_{i-1}$ to
+  $\sigma_i$ is no more than $\epsilon_E + \epsilon_{S_i} \leq \epsilon_E + k_i/\sqrt{T} + j_i\epsilon_E
+  \leq  k_i/\sqrt{T} + 2j_i\epsilon_E$.
+
+  Let $k = \max_i k_i$ and $j = \max_i j_i$. Then after $d$ re-solving
+  steps, the exploitability is bounded by $(d+1)k/\sqrt{T} +
+  (2d+1)j\epsilon_E$.
+\end{proof}
+
+\subsection*{Best-response Values Versus Self-play Values}
+DeepStack uses self-play values within the continual re-solving
+computation, rather than the best-response values described in
+Theorem~\ref{thm:deepstack}. Preliminary tests using CFR-D to solve
+smaller games suggested that strategies generated using self-play
+values were generally less exploitable and had better one-on-one
+performance against test agents, compared to strategies generated
+using best-response values.  Figure~\ref{fig:selfplay-converge} shows
+an example of DeepStack's exploitability in a particular river subgame 
+with different numbers of re-solving iterations.  Despite lacking
+a theoretical justification for its soundness, using self-play values appears
+to converge to low exploitability strategies just as with using best-response values.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.5\textwidth]{figs/selfplay-converge}
+\caption{DeepStack's exploitability within a particular public state at the start of the river as a function of the number of re-solving iterations.}\label{fig:selfplay-converge}
+\end{figure}
+
+One possible explanation for why self-play values work well with
+continual re-solving is that at every re-solving step, we give away a
+little more value to our best-response opponent because we are not
+solving the subtrees exactly. If we use the self-play values for the
+opponent, the opponent's strategy is slightly worse than a best
+response, making the opponent values smaller and
+counteracting the inflationary effect of an inexact solution.  
+While this optimism could hurt us by setting unachievable
+goals for the next re-solving step (an increased
+$\text{U}^S_{w,\sigma}$ term), in poker-like games we find that the
+more positive expectation is generally correct (a decreased
+$\text{EXP}^S_{w,\sigma}$ term.)
+
+\section*{Pseudocode}
+Complete pseudocode for DeepStack's depth-limited continual re-resolving algorithm is in Algorithm~\ref{alg:pseudocode}.  Conceptually, DeepStack can be decomposed into four functions: \textproc{Re-solve}, \textproc{Values}, \textproc{UpdateSubtreeStrategies}, and \textproc{RangeGadget}. The main function is \textproc{Re-solve}, which is called every time DeepStack needs to take an action. It iteratively calls each of the other functions to refine the lookahead tree solution. After $T$ iterations, an action is sampled from the approximate equilibrium strategy at the root of the subtree to be played. 
+According to this action, DeepStack's range, $\vec{r}_1$, and its opponent's counterfactual values, $\vec{v}_2$, are updated in preparation for its next decision point.
+
+\let\veccopy\vec
+\let\vec\mathbf
+
+\begin{algorithm}[!htbp]
+\small 
+\caption{Depth-limited continual re-solving}
+\label{alg:pseudocode}
+\textbf{INPUT:} Public state $S$, player range $\vec{r}_1$ over our information sets in $S$, opponent counterfactual values $\vec{v}_2$ over their information sets in $S$, and player information set $I \in S$\\
+\textbf{OUTPUT:} Chosen action $a$, and updated representation after the action $(S(a), \vec{r}_1(a), \vec{v}_2(a))$
+\begin{algorithmic}[1]
+
+\Statex
+\Function{Re-solve}{$S,\vec{r}_1,\vec{v}_2,I$}
+    \State $\sigma^0 \gets \text{arbitrary initial strategy profile}$
+    \State $\vec{r}^0_2 \gets \text{arbitrary initial opponent range}$
+    \State $R_G^0,R^0 \gets \vec{0}$ \Comment{Initial regrets for gadget game and subtree}
+    \For{$t=1$ to $T$}
+        \State $\vec{v}_1^{t},\vec{v}_2^{t} \gets$ \Call{Values}{$S,\sigma^{t-1},\vec{r}_1,\vec{r}^{t-1}_2,0$}
+        \State $\sigma^t,R^t \gets$ \Call{UpdateSubtreeStrategies}{$S,\vec{v}_1^{t},\vec{v}_2^{t},R^{t-1}$}
+        \State $\vec{r}^t_2,R_G^t \gets$    
+            \Call{RangeGadget}{$\vec{v}_2,\vec{v}_2^{t}(S),R_G^{t-1}$}
+    \EndFor
+    \State $\overline{\sigma}^T \gets \frac{1}{T}\sum_{t=1}^T \sigma^t$ \Comment{Average the strategies}
+    \State $a \sim \overline{\sigma}^T(\cdot |I)$ \Comment{Sample an action}
+    \State $\vec{r}_1(a) \gets \langle \vec{r}_1, \sigma(a|\cdot) \rangle$ \Comment{Update the range based on the chosen action}
+    \State $\vec{r}_1(a) \gets \vec{r}_1(a) / ||\vec{r}_1(a)||_1$ \Comment{Normalize the range}
+    \State $\vec{v}_2(a) \gets \frac{1}{T}\sum_{t=1}^T \vec{v}^t_2(a)$ \Comment{Average of counterfactual values after action $a$}
+    \State \Return $a,S(a),\vec{r}_1(a), \vec{v}_2(a)$
+\EndFunction
+\Statex
+
+\Function{Values}{$S,\sigma,\vec{r}_1,\vec{r}_2,d$} \Comment{\parbox[t]{.6\linewidth}{Gives the counterfactual values of the subtree $S$ under $\sigma$,
+    computed with a depth-limited lookahead.}}
+    \If{$S$ is terminal}
+        \State $\vec{v}_1(S) \gets U_S\vec{r}_2$ \Comment{Where $U_S$ is the matrix of the bilinear utility function at $S$, \hspace{2pt}~}
+        \State $\vec{v}_2(S) \gets \vec{r}_1^\intercal U_S$ \hspace*{\fill}$U(S) = \vec{r}_1^\intercal U_S \vec{r_2}$, thus giving vectors of counterfactual values
+        \State \Return $\vec{v}_1(S),\vec{v}_2(S)$
+    \ElsIf{$d = \textrm{MAX-DEPTH}$}
+        \State \Return \Call{NeuralNetEvaluate}{$S,\vec{r}_1,\vec{r}_2$}
+    \EndIf
+    \State $\vec{v}_1(S), \vec{v}_2(S) \gets \vec{0}$
+    \For{action $a \in S$}
+        \State $\vec{r}_{\text{Player}(S)}(a) \gets \langle \vec{r}_{\text{Player}(S)}, \sigma(a|\cdot) \rangle$
+            \Comment Update range of acting player based on strategy
+        \State $\vec{r}_{\text{Opponent}(S)}(a) \gets \vec{r}_{\text{Opponent}(S)}$
+        \State $\vec{v}_1(S(a)), \vec{v}_2(S(a)) \gets \Call{Value}{S(a),\sigma,\vec{r}_1(a),\vec{r}_2(a),d+1}$
+        \State $\vec{v}_{\text{Player}(S)}(S) \gets \vec{v}_{\text{Player}(S)}(S) + \sigma(a|\cdot)\vec{v}_{\text{Player(S)}}(S(a))$
+            \Comment{Weighted average}
+        \State $\vec{v}_{\text{Opponent}(S)}(S) \gets \vec{v}_{\text{Player}(S)}(S) + \vec{v}_{\text{Opponent(S)}}(S(a))$
+            \Statex\Comment{\parbox[t]{.5\linewidth}{Unweighted sum, as our strategy is already included in opponent counterfactual values}}
+    \EndFor
+    \State \Return $\vec{v}_1, \vec{v}_2$
+\EndFunction
+\algstore{pseudocode}
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\small
+\begin{algorithmic}
+\algrestore{pseudocode}
+
+\Function{UpdateSubtreeStrategies}{$S,\vec{v}_1,\vec{v}_2,R^{t-1}$}
+    \For{$S' \in \{S\}\cup\text{SubtreeDescendants}(S)$ with $\text{Depth}(S') < \textrm{MAX-DEPTH}$}
+        \For{action $a \in S'$}
+            \State $R^t(a|\cdot) \gets R^{t-1}(a|\cdot) + \vec{v}_{\text{Player}(S')}(S'(a)) - \vec{v}_{\text{Player}(S')}(S')$
+                \Statex\Comment{Update acting player's regrets}
+        \EndFor
+        \For{information set $I \in S'$}
+            \State $\sigma^t(\cdot|I) \gets \frac{R^t(\cdot|I)^+}{\sum_{a}R^t(a|I)^+}$ \Comment{Update strategy with regret matching}
+        \EndFor
+    \EndFor
+    \State \Return $\sigma^t, R^t$
+\EndFunction
+\Statex
+
+\Function{RangeGadget}{$\vec{v}_2,\vec{v}_2^{t},R_G^{t-1}$} \Comment{\parbox[t]{.5\linewidth}{Let opponent choose to play in the subtree or receive the input value with each hand (see Burch~et~al.~\cite{cprg:cfrd})}}
+    \State $\sigma_G(\textrm{F}|\cdot) \gets
+        \frac{R_G^{t-1}(\textrm{F}|\cdot)^{+}}{R_G^{t-1}(\textrm{F}|\cdot)^{+} +
+        R_G^{t-1}(\textrm{T}|\cdot)^{+}}$ \Comment{F is Follow action, T is Terminate}
+    \State $\vec{r}_2^t \gets \sigma_G(\textrm{F}|\cdot)$
+    \State $\vec{v}_G^{t} \gets \sigma_G(\textrm{F}|\cdot)\vec{v}_2^{t-1} +    
+        (1-\sigma_G(\textrm{F}|\cdot))\vec{v}_2$ \Comment{Expected value of gadget strategy}
+    \State $R_G^{t}(\textrm{T}|\cdot) \gets R_G^{t-1}(\textrm{T}|\cdot) + \vec{v}_2 - v_G^{t-1}$ \Comment{Update regrets}
+    \State $R_G^{t}(\textrm{F}|\cdot) \gets R_G^{t-1}(\textrm{F}|\cdot) + \vec{v}_2^{t} - v_G^{t}$
+    \State \Return $\vec{r}_2^t, R_G^t$
+\EndFunction
+\end{algorithmic}
+\end{algorithm}
+
+\let\vec\veccopy

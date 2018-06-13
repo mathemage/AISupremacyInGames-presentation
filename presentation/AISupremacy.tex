@@ -619,19 +619,24 @@
     \begin{frame}{DeepStack: Components}
       \begin{itemize}[<+- | alert@+>]
         \item continual resolving
-          \begin{itemize}[<+- | alert@+>]
-            \item DeepStack computes a strategy based on the current state of the game for only the remainder of the hand, not maintaining one for the full game, which leads to lower overall exploitability.
-          \end{itemize}[<+- | alert@+>]
-
         \item ``intuitive'' local search
           \begin{itemize}[<+- | alert@+>]
             \item DeepStack avoids reasoning about the full remaining game by substituting computation beyond a certain depth with a fast-approximate estimate. Automatically trained with deep learning, DeepStack's “intuition” gives a gut feeling of the value of holding any cards in any situation.
-          \end{itemize}[<+- | alert@+>]
+          \end{itemize}
 
         \item sparse lookahead trees
           \begin{itemize}[<+- | alert@+>]
             \item DeepStack considers a reduced number of actions, allowing it to play at conventional human speeds. The system re-solves games in under five seconds using a simple gaming laptop with an Nvidia GPU.
-          \end{itemize}[<+- | alert@+>]
+          \end{itemize}
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{DeepStack: Continual Resolving}
+      \begin{itemize}[<+- | alert@+>]
+        \item only a strategy based on the current state
+        \item only for the remainder of the hand
+        \item no strategy for the full game
+        \item $\Rightarrow$ lower overall exploitability
       \end{itemize}
     \end{frame}
   }

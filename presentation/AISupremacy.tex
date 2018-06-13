@@ -51,6 +51,7 @@
 \newcommand{\hbline}{\Xhline{2.5\arrayrulewidth}}
 \newcommand\nocell[1]{\multicolumn{#1}{c?{1.5pt}}{}}
 \setcellgapes{5pt}
+\newcommand{\cfrP}{CFR\textsuperscript{+}}
 
 \newcommand{\atariCitation}{\colorcite[\cite{Mnih2015human}]}
 \newcommand{\cepheusCitation}{\colorcite[\cite{Bowling2015heads}]}
@@ -740,7 +741,7 @@
     \usebackgroundtemplate{
       \includegraphics[width=\paperwidth, keepaspectratio]{../img/gacr-2018-generalization-to-other-domains.png}
     }
-    \setbeamertemplate{frame footer}{\colorcite from presentation of dr. Viliam Lisý}
+    \setbeamertemplate{frame footer}{\colorcite from presentation of dr. Viliam Lisy}
     \begin{frame}[standout]
     \end{frame}
   }
@@ -748,6 +749,20 @@
   {
     \setbeamertemplate{frame footer}{\colorcite \url{https://gitlab.com/beyond-deepstack/TensorCFR/}}
     \begin{frame}{TensorCFR}
+      \begin{itemize}[<+- | alert@+>]
+        \item an implementation of \cfrP
+        \item in TensorFlow
+        \item optimized for GPU
+        \item \emph{on-going} effort of:
+          \begin{itemize}[<+- | alert@+>]
+            \item dr. Viliam Lisy
+            \item Bc. Jan Rudolf (part-time)
+            \item and me :-)
+          \end{itemize}
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{TensorCFR: The Computation Graph}
       \begin{center}
         \includegraphics[width=\textwidth]{../img/tensorcfr_computation_graph.png}
       \end{center}

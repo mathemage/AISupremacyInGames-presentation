@@ -602,12 +602,31 @@
 
   {
     \setbeamertemplate{frame footer}{\deepstackAiCitation}
-    \begin{frame}{DeepStack}
+    \begin{frame}{DeepStack: Intro}
       \begin{itemize}[<+- | alert@+>]
         \item completed in December 2016
         \item published in Science in March 2017
         \item the first AI capable of beating professional poker players
         \item at \textbf{Heads-Up No-Limit Texas Hold'em} (HUNL)
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{DeepStack: Components}
+      \begin{itemize}[<+- | alert@+>]
+        \item continual resolving
+          \begin{itemize}[<+- | alert@+>]
+            \item DeepStack computes a strategy based on the current state of the game for only the remainder of the hand, not maintaining one for the full game, which leads to lower overall exploitability.
+          \end{itemize}[<+- | alert@+>]
+
+        \item ``intuitive'' local search
+          \begin{itemize}[<+- | alert@+>]
+            \item DeepStack avoids reasoning about the full remaining game by substituting computation beyond a certain depth with a fast-approximate estimate. Automatically trained with deep learning, DeepStack's “intuition” gives a gut feeling of the value of holding any cards in any situation.
+          \end{itemize}[<+- | alert@+>]
+
+        \item sparse lookahead trees
+          \begin{itemize}[<+- | alert@+>]
+            \item DeepStack considers a reduced number of actions, allowing it to play at conventional human speeds. The system re-solves games in under five seconds using a simple gaming laptop with an Nvidia GPU.
+          \end{itemize}[<+- | alert@+>]
       \end{itemize}
     \end{frame}
   }

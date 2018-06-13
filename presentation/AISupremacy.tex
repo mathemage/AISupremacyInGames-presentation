@@ -715,6 +715,21 @@
         \includegraphics[width=\textwidth, keepaspectratio]{../img/humans_curio.pdf}
       \end{center}
     \end{frame}
+
+    \begin{frame}{DeepStack: Theoretical Guarantees}
+      \begin{theorem}
+        \begin{itemize}[<+- | alert@+>]
+          \item Let the error of \emph{counterfactual values} returned by the value function be $\le\epsilon$.
+          \item Let $T$ be the number of resolving iterations for each decision.
+        \end{itemize}
+        \pause
+        Then the exploitability of~the strategies is
+        \[
+          \le k_1 \epsilon + \frac{k_2}{\sqrt{T}}
+        \]
+        where $k_1$ and $k_2$ are game-specific constants.
+      \end{theorem}
+    \end{frame}
   }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

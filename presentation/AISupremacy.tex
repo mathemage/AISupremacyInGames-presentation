@@ -620,10 +620,6 @@
       \begin{itemize}[<+- | alert@+>]
         \item continual resolving
         \item ``intuitive'' local search
-          \begin{itemize}[<+- | alert@+>]
-            \item DeepStack avoids reasoning about the full remaining game by substituting computation beyond a certain depth with a fast-approximate estimate. Automatically trained with deep learning, DeepStack's “intuition” gives a gut feeling of the value of holding any cards in any situation.
-          \end{itemize}
-
         \item sparse lookahead trees
           \begin{itemize}[<+- | alert@+>]
             \item DeepStack considers a reduced number of actions, allowing it to play at conventional human speeds. The system re-solves games in under five seconds using a simple gaming laptop with an Nvidia GPU.
@@ -637,6 +633,15 @@
         \item only for the remainder of the hand
         \item no strategy for the full game
         \item $\Rightarrow$ lower overall exploitability
+      \end{itemize}
+    \end{frame}
+
+    \begin{frame}{DeepStack: ``Intuitive'' Local Search}
+      \begin{itemize}[<+- | alert@+>]
+        \item no reasoning about the full remaining game
+        \item computation beyond a certain depth: a fast-approximate estimate
+        \item namely, deep neural networks
+        \item ``gut feeling'' of the value of holding any cards in any situation
       \end{itemize}
     \end{frame}
   }

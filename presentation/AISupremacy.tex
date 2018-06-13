@@ -609,13 +609,23 @@
   }
 
   {
+    \usebackgroundtemplate{
+      \includegraphics[width=\paperwidth, keepaspectratio]{../img/cepheus-screen.png}
+    }
     \setbeamertemplate{frame footer}{\colorcite\url{http://poker.srv.ualberta.ca/}}
-    \begin{frame}{Cepheus in Science}
-      \begin{center}
-        \includegraphics[width=\textwidth, keepaspectratio]{../img/cepheus-screen.png}
-        \pause
-        \emph{Counterfactual Regret Minimization\textsuperscript{+}} (\cfrP)
-      \end{center}
+    \begin{frame}{}
+      \vskip 0.6\paperheight
+      \color{black}
+      a~massive use of \emph{Counterfactual Regret Minimization\textsuperscript{+}} (\cfrP):
+      \begin{itemize}[<+- | alert@+>]
+          \color{black}
+          \tiny
+        \item game-theoretic analogy to the \emph{gradient descent}
+        \item parameters (weights) of neural networks $\sim$ strategies
+        \item loss $\sim$ \emph{counterfactual values}
+        \item gradient $\sim$ \emph{counterfactual regrets}
+        \item trained neural network (optimal weights) $\sim$ solution to the game (Nash equilibrium)
+      \end{itemize}
     \end{frame}
   }
 
